@@ -174,7 +174,7 @@ const MainPage = () => {
           {isProfileOpen && (
             <div className="profile-dropdown">
               <button onClick={openProfileModal}>My Profile</button>
-              <a href="/login">Logout</a>
+              <a href="/">Logout</a>
             </div>
           )}
         </div>
