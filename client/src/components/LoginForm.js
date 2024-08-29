@@ -8,31 +8,32 @@ import Footer from './Footer';
 const LoginForm = ({ onSwitchToRegister }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');  // State for handling error messages
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form submitted');  // Debugging: Log when form is submitted
+        console.log('Form submitted');
 
         try {
             const response = await axios.post('http://localhost:5000/login', {
                 email,
                 password
             }, {
-                withCredentials: true // Ensure cookies are sent with the request if needed
+                withCredentials: true
             });
 
-            console.log(response.data);  // Debugging: Log the server response
+            console.log(response.data);
 
             if (response.data.success) {
-                // Debugging: Confirm navigation
-                console.log('Login successful, navigating to main page');
-                navigate('/main');
+                if (response.data.user.role === 'admin') {
+                    navigate('/logs'); // Redirect to logs page if user is an admin
+                } else {
+                    navigate('/main'); // Redirect to main page if user is a regular user
+                }
             } else {
-                // Set the error message to display on the UI
                 setErrorMessage(response.data.message || 'Login failed');
-                console.log(response.data.message);  // Debugging: Log the error message
+                console.log(response.data.message);
             }
         } catch (error) {
             setErrorMessage('An error occurred during login. Please try again.');
@@ -42,17 +43,12 @@ const LoginForm = ({ onSwitchToRegister }) => {
 
     return (
         <div className="App">
-            {/* Header */}
             <Header />
-
-            {/* Main Content */}
             <main className="main-content">
                 <div className="login-form">
                     <h2>Login</h2>
                     <p>Enter your account to continue with Thesis HUB</p>
-
-                    {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
-
+                    {errorMessage && <p className="error-message">{errorMessage}</p>}
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <input
@@ -80,8 +76,6 @@ const LoginForm = ({ onSwitchToRegister }) => {
                     </p>
                 </div>
             </main>
-
-            {/* Footer */}
             <Footer />
         </div>
     );

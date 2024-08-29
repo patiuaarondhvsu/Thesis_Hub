@@ -319,9 +319,10 @@ router.post("/signup", async(req,res)=>{
                         // Set session or generate token
                         req.session.authenticated = true;
                         req.session.email = email;
-    
+                        req.session.role = 'user'; // Set role to user
+                        
                         // Return JSON response instead of rendering a page
-                        res.json({ success: true, message: "Login successful", user: { email: user.email, name: user.name } });
+                        res.json({ success: true, message: "Login successful", user: { email: user.email, name: user.name, role: 'user' } });
                     } else {
                         // Return JSON response for unverified email
                         res.json({ success: false, message: "Email hasn't been verified yet. Check your inbox." });
@@ -336,9 +337,9 @@ router.post("/signup", async(req,res)=>{
                 if (admin) {
                     // Admin exists, check if the password matches
                     if (admin.password === password) {
-                        req.session.authenticated = true;
                         req.session.email = email;
-    
+                        req.session.role = 'admin'; // Set role to admin
+                        
                         // Return JSON response for admin login
                         res.json({ success: true, message: "Admin login successful", user: { email: admin.email, role: 'admin' } });
                     } else {
@@ -357,19 +358,6 @@ router.post("/signup", async(req,res)=>{
         }
     });
     
-      // Route to render the HTML form
-    
-      router.get('/home', (req, res) => {
-        Thesis.find()
-          .then(theses => {
-            console.log('Retrieved theses:', theses); // Debugging
-            res.render('home', { theses });
-          })
-          .catch(err => {
-            console.error('Error fetching theses:', err);
-            res.status(500).send('Internal Server Error');
-          });
-      });
       
     
     // for log out

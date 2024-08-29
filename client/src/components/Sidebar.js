@@ -10,8 +10,7 @@ const Sidebar = ({ isVisible }) => {
         <li><Link to="/logs">Logs</Link></li>
         <li><Link to="/theses">Theses</Link></li> 
         <li><Link to="/users">Users</Link></li>
-        <li><Link to="/chatbot">Chatbot</Link></li>
-        <li><Link to="/login">Logout</Link></li>
+        <li><Link to="/">Logout</Link></li>
       </ul>
     </div>
   );
