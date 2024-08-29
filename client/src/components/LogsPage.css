@@ -1,0 +1,33 @@
+.main-page {
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px); /* Adjusts for header/footer height */
+}
+
+.content {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+}
+
+
+
+.logs-content {
+  /* Styling for logs content */
+}
+
+.log-table {
+  width: 97%;
+}
+
+.log-table th, .log-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.log-table th {
+  background-color: #ddd;
+}
+

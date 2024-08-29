@@ -1,0 +1,285 @@
+.main-page {
+   
+  }
+
+  h2 {
+
+  font-size: 20px;
+font-style: inherit;
+  color: #333;
+  }
+
+  /* Header Styling */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff; /* Example background color */
+    padding: 10px 20px;
+  }
+  
+  .logo {
+    height: 50px; /* Adjust as needed */
+  }
+  
+  .profile-section {
+    display: absolute;
+    align-items: center;
+    padding: 10px;
+
+  }
+  
+  .profile-icon {
+    height: 40px;
+    color: black;
+    cursor: pointer;
+  }
+  
+  .profile-dropdown {
+
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    right: 0;
+  
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    width: 200px;
+  }
+
+  
+  .profile-dropdown button,
+  .profile-dropdown a {
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+  }
+  
+  .profile-dropdown button:hover,
+
+  .profile-dropdown a:hover h2{
+   
+  text-decoration: none;
+  }
+  .navigation {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .nav-link {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #333;
+    padding: 10px;
+  }
+  
+  .nav-link:hover {
+    color: #007bff;
+  }
+
+ 
+
+  .chatbot-button {
+    padding-left: 5px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .library-button {
+    possition: fixed;
+    margin-left: 800px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .chatbot-button:hover, .library-button:hover {
+    text-decoration:underline;
+
+  }
+
+  /* End of Header */
+  .star-icon {
+    font-size: 20px;
+    cursor: pointer;
+    color: #ffcc00; /* Color of the star */
+    margin-left: 10px;
+  }
+  
+  .notification-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    z-index: 1000;
+  }
+  
+  .notification {
+    background-color: #4caf50; /* Green background for success */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .notification-message {
+    margin: 0;
+  }
+  
+  .results, .library-list {
+    margin: 20px;
+  }
+  
+  .result-item, .library-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+  }
+  
+  .result-title, .library-item-details .result-title {
+    font-weight: bold;
+  }
+  
+  .result-authors, .result-date, .library-item-details .result-authors, .library-item-details .result-date {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  .delete-button {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .content {
+    flex-grow: 1;
+    padding: 20px;
+  }
+  
+  
+  .sidebar.hidden {
+    transform: translateX(-100%);
+  }
+  
+  .search-bar {
+  display: flex;
+  align-items: center;
+  background-color: rgb(240, 239, 239);
+  overflow: hidden; /* Ensures rounded corners are applied to children */
+  width: 40%;
+  padding: 10px;
+  font-size: 16px;
+  margin-right: auto;
+  margin-left: auto;
+  }
+  
+  .search-bar input[type="text"] {
+  flex-grow: 1;
+  border: none;
+  padding: 10px;
+  outline: none;
+  }
+
+  .search-icon {
+    background-color: #007bff; /* Blue background for the button */
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .date-icon {
+    background-color: #ffffff; /* Blue background for the button */
+    color: white;
+    border: none;
+    padding: 6px 20px;
+    cursor: pointer;
+  }
+  
+  .date-icon:hover, .search-icon:hover {
+    color: #0056b3  ;
+  }
+  
+  .results {
+    margin-top: 20px;
+  }
+  
+  .result-item {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .result-title {
+    font-size: 18px;
+    color: #0056b3;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .result-title:hover {
+    text-decoration: underline;
+  }
+  
+  .result-authors, .result-date {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+  }
+  
+  .date-icon {
+    font-size: 24px;
+    color: black;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .date-icon:hover {
+    color: #0056b3;
+  }
+  

@@ -1,0 +1,45 @@
+/* src/MainPage.css */
+.main-page {
+  display: flex;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px); /* Adjusts for header/footer height */
+}
+
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+
+}
+
+
+.content.sidebar-open {
+  margin-left: 250px; /* Adjust according to the width of your sidebar */
+}
+
+
+
+.search-bar {
+  width: 40%;   
+  padding: 10px;
+  font-size: 16px;
+  margin-right: auto; 
+  margin-left: auto;  
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.data-table th {
+  background-color: #f2f2f2;
+}
