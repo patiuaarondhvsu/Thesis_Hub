@@ -2,7 +2,8 @@ const { Router } = require('express');
 const passport = require('passport');
 const path = require('path');
 
-
+// for security/authentication and session
+const requireLogin = require('../middleware/requireLogin');
 
 // for routers
 const router = Router();
@@ -54,15 +55,6 @@ router.get("/chatbot", requireLogin, (req, res) => {
 var userCollection = require("../src/userdb");
 var admincollection = require("../src/admindb");
 var userVerification = require("../src/userVerification");
-
-// requirements
-function requireLogin(req, res, next) {
-    if (req.session && req.session.user) {
-        return next();
-    } else {
-        res.redirect("/login");
-    }
-}
 
 // SignUp for User
 router.post("/signup", async(req,res)=>{
@@ -370,14 +362,7 @@ router.post("/signup", async(req,res)=>{
         });
     });
     
-    // requirements
-function requireLogin(req, res, next) {
-    if (req.session && req.session.email) {
-        return next();
-    } else {
-        res.redirect("/login");
-    }
-}
+
 
 // for profile
 router.get("/profile", requireLogin, (req, res) => {
