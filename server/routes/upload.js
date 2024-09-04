@@ -23,9 +23,8 @@ router.post('/upload', upload.single('thesisPDF'), async (req, res) => {
       titlename,
       category,
       year,
-      filename: req.file.originalname, // Store the original filename
-      // Store the file buffer as base64 or use an appropriate storage mechanism
-      fileBuffer: req.file.buffer.toString('base64') // Convert buffer to base64 string (consider file storage alternatives)
+      filename: req.file.originalname, 
+      fileBuffer: req.file.buffer.toString('base64')
     });
 
     // Save to MongoDB

@@ -1,3 +1,4 @@
+const connectDB = require("./mongodb");
 const mongoose = require('mongoose');
 
 // Define the ThesisSchema
