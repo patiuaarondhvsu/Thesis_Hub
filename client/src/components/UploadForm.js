@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const UploadForm = ({ onClose }) => {
-  const [title, setTitle] = useState('');
+  const [titlename, settitlename] = useState('');
   const [category, setCategory] = useState('');
   const [year, setYear] = useState('');
   const [author, setAuthor] = useState('');
@@ -13,7 +13,7 @@ const UploadForm = ({ onClose }) => {
     event.preventDefault();
 
     const formData = new FormData();
-    formData.append('title', title);
+    formData.append('titlename', titlename);
     formData.append('category', category);
     formData.append('year', year);
     formData.append('author', author);
@@ -39,9 +39,9 @@ const UploadForm = ({ onClose }) => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            placeholder="title"
+            value={titlename}
+            onChange={(e) => settitlename(e.target.value)}
             className="form-input"
             required
           />
@@ -54,7 +54,7 @@ const UploadForm = ({ onClose }) => {
             required
           />
           <input
-            type="text"
+            type="number"
             placeholder="Year"
             value={year}
             onChange={(e) => setYear(e.target.value)}
