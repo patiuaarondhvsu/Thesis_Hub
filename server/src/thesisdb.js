@@ -6,11 +6,17 @@ const ThesisSchema = new mongoose.Schema({
   titlename: String,
   category: String,
   year: Number,
+  author: String,
   filename: String,
+  fileBuffer: String,
   path: String,
   dateuploaded: {
     type: Date,
     default: Date.now
+  },
+  deleted: {
+    type: Boolean,
+    default: false 
   }
 });
 

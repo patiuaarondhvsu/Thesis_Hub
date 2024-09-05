@@ -1,3 +1,9 @@
+const { Router } = require('express');
+const router = Router();
+const multer = require('multer');
+const ThesisCollection = require('../src/thesisdb'); 
+const RCDCollection = require('../src/rcd');
+
 const express = require('express');
 require('./config');
 const products = require('./products');

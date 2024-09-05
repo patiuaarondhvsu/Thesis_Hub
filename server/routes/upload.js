@@ -9,9 +9,9 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Handle form submission with file upload
-router.post('/upload', upload.single('thesisPDF'), async (req, res) => {
+router.post('/api/upload', upload.single('thesisPDF'), async (req, res) => {
   try {
-    const { titlename, category, year } = req.body;
+    const { titlename, category, year, author } = req.body;
 
     // Ensure all required fields are provided
     if (!titlename || !category || !year || !req.file) {
@@ -23,32 +23,30 @@ router.post('/upload', upload.single('thesisPDF'), async (req, res) => {
       titlename,
       category,
       year,
-      filename: req.file.originalname, 
+      author,
+      filename: req.file.originalname,
       fileBuffer: req.file.buffer.toString('base64')
     });
 
-    // Save to MongoDB
-    await newThesis.save();
-    
-    // Create a new Thesis RCD document
-    const newRCDThesis = new RCDCollection({
-      titlename,
-      category,
-      year,
-      filename: req.file.originalname, // Store the original filename
-      // Store the file buffer as base64 or use an appropriate storage mechanism
-      fileBuffer: req.file.buffer.toString('base64') // Convert buffer to base64 string (consider file storage alternatives)
+    // Save Thesis document to MongoDB
+    const savedThesis = await newThesis.save();
+
+    // Create a Record Control Document (RCD) entry
+    const newRCD = new RCDCollection({
+      thesisId: savedThesis._id,
+      uploadDate: new Date()
+      // Populate with other required fields if necessary
     });
 
-    // Save to MongoDB
-    await newRCDThesis.save();
+    // Save RCD document to MongoDB
+    await newRCD.save();
 
     // Send a success response
-    res.render('adminhome', { message: 'File uploaded and data saved successfully!' });
+    res.render('adminhome', { message: 'File uploaded, thesis data saved, and RCD entry created successfully!' });
   } catch (err) {
     // Handle error
-    console.error('Error saving thesis:', err);
-    res.status(500).send('Error saving thesis');
+    console.error('Error handling upload:', err);
+    res.status(500).send('Error processing upload');
   }
 });
 

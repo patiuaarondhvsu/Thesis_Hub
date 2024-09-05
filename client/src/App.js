@@ -9,7 +9,6 @@ import ProfileModal from './components/ProfileModal';
 import MainPage from './components/MainPage';
 import LoginForm from './components/LoginForm';
 import UploadForm from './components/UploadForm';
-import ThesesList from './components/ThesesList';
 import './App.css';
 
 
@@ -26,7 +25,6 @@ function App() {
           <Route path="/upload" element={<UploadForm />} />
           <Route path="/profile" element={<ProfileModal />} />
           <Route path="/main" element={<MainPage />} />
-          <Route path="/theseslist" element={<ThesesList/>} />
           
         </Routes>
       </div>

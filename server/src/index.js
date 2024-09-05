@@ -4,12 +4,14 @@ const session = require('express-session');
 const expbs = require('express-handlebars');
 const path = require("path");
 const thesisCollection = require("./thesisdb");
+const RCDCollection = require("./rcd");
 
 // routers
 const profileRoute = require('../routes/profile');
 const uploadRoute = require('../routes/upload');
 const userRoute = require('../routes/user');
 const thesisRoute = require('../routes/theses');
+const deleteRoute = require('../routes/delete');
 
 const app = express();
 
@@ -53,6 +55,7 @@ app.use(profileRoute);
 app.use(uploadRoute);
 app.use(userRoute);
 app.use(thesisRoute);
+app.use(deleteRoute);
 
 // Page routes
 app.get('/index', (req, res) => {
