@@ -19,7 +19,9 @@ const ThesesPage = () => {
         // Fetch data from the backend
         axios.get('http://localhost:5000/api/theses')
             .then(response => {
-                setTheses(response.data);
+                // Filter out deleted theses
+                const activeTheses = response.data.filter(thesis => !thesis.deleted);
+                setTheses(activeTheses);
             })
             .catch(err => {
                 setError(err.message);
