@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import Footer from './Footer';
 import UploadForm from './UploadForm';
+import EditForm from './EditForm';
 
 const ThesesPage = () => {
     const [theses, setTheses] = useState([]);
@@ -13,6 +14,8 @@ const ThesesPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [thesisToDelete, setThesisToDelete] = useState(null);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+    const [isEditFormModalOpen, setIsEditFormModalOpen] = useState(false); // State for EditForm modal
+    const [selectedThesis, setSelectedThesis] = useState(null); // State for selected thesis to edit
     const [sidebarVisible, setSidebarVisible] = useState(false);
 
     useEffect(() => {
@@ -33,13 +36,14 @@ const ThesesPage = () => {
     };
 
     const addThesis = () => {
-        // Add thesis logic, e.g., show form modal to add a new thesis
+        // Show UploadForm modal to add a new thesis
         openFormModal();
     };
 
-    const editThesis = (id) => {
-        // Edit thesis logic, e.g., show form modal to edit the thesis
-        openFormModal();
+    const editThesis = (thesis) => {
+        // Show EditForm modal with selected thesis data
+        setSelectedThesis(thesis);
+        setIsEditFormModalOpen(true);
     };
 
     const openModal = (id) => {
@@ -58,7 +62,6 @@ const ThesesPage = () => {
                 // Update state to remove the deleted thesis
                 setTheses(theses.filter((thesis) => thesis._id !== thesisToDelete));
                 closeModal();
-                
             })
             .catch(err => {
                 setError(err.message);
@@ -72,6 +75,11 @@ const ThesesPage = () => {
 
     const closeFormModal = () => {
         setIsFormModalOpen(false);
+    };
+
+    const closeEditFormModal = () => {
+        setIsEditFormModalOpen(false);
+        setSelectedThesis(null);
     };
 
     const filteredTheses = theses.filter(
@@ -130,7 +138,7 @@ const ThesesPage = () => {
                                         <td>{thesis.author}</td>
                                         <td>{thesis.filename}</td>
                                         <td>
-                                            <button onClick={() => editThesis(thesis._id)} className="edit-button">Edit</button>
+                                            <button onClick={() => editThesis(thesis)} className="edit-button">Edit</button>
                                             <button onClick={() => openModal(thesis._id)} className="delete-button">Delete</button>
                                         </td>
                                     </tr>
@@ -142,6 +150,14 @@ const ThesesPage = () => {
                     {/* Form Modal */}
                     {isFormModalOpen && (
                         <UploadForm onClose={closeFormModal} />
+                    )}
+
+                    {/* Edit Form Modal */}
+                    {isEditFormModalOpen && selectedThesis && (
+                        <EditForm 
+                            onClose={closeEditFormModal} 
+                            existingData={selectedThesis} 
+                        />
                     )}
 
                     {/* Delete Confirmation Modal */}

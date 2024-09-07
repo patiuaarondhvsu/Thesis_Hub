@@ -12,6 +12,8 @@ const uploadRoute = require('../routes/upload');
 const userRoute = require('../routes/user');
 const thesisRoute = require('../routes/theses');
 const deleteRoute = require('../routes/delete');
+const editRoute = require('../routes/edit');
+const recoverRoute = require('../routes/recover');
 
 const app = express();
 
@@ -56,6 +58,8 @@ app.use(uploadRoute);
 app.use(userRoute);
 app.use(thesisRoute);
 app.use(deleteRoute);
+app.use(editRoute);
+app.use(recoverRoute);
 
 // Page routes
 app.get('/index', (req, res) => {
