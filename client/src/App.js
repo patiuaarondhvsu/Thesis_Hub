@@ -10,7 +10,6 @@ import MainPage from './components/MainPage';
 import LoginForm from './components/LoginForm';
 import UploadForm from './components/UploadForm';
 import EditForm from './components/EditForm';
-import ThesisRecoveryForm from './components/ThesisRecoveryForm';
 import './App.css';
 
 
@@ -26,7 +25,6 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/upload" element={<UploadForm />} />
           <Route path="/edit" element={<EditForm />} />
-          <Route path="/recover" element={<ThesisRecoveryForm />} />
           <Route path="/profile" element={<ProfileModal />} />
           <Route path="/main" element={<MainPage />} />
           

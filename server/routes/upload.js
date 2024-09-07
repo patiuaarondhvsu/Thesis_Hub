@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const router = Router();
 const multer = require('multer');
-const ThesisCollection = require('../src/thesisdb'); // Ensure this path is correct
-const RCDCollection = require('../src/rcd'); // Ensure this path is correct
+const ThesisCollection = require('../src/thesisdb');
+const RCDCollection = require('../src/rcd'); 
 
 // Multer Configuration for In-Memory Storage
 const storage = multer.memoryStorage();

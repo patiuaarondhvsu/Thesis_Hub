@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const router = Router();
-const ThesisCollection = require('../src/thesisdb'); // Ensure this path is correct
+const ThesisCollection = require('../src/thesisdb'); 
+
 
 router.put('/thesis/recover/:id', async (req, res) => {
     try {
