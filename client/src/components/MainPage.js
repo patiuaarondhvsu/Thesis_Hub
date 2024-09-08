@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import './MainPage.css';
+import axios from 'axios';
+import './MainPage.css'; // Ensure you have appropriate styles for this page
 import Date from './Date';
 import ProfileModal from './ProfileModal';
+import ChatbotModal from './ChatbotModal'; 
+import Footer from './Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faSearch, faUserCircle, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
-import Footer from './Footer';
-import ChatbotModal from './ChatbotModal'; 
 
 const MyLibraryModal = ({ isOpen, onClose, libraryItems, onDelete, notification }) => {
   if (!isOpen) return null;
@@ -38,8 +39,9 @@ const MyLibraryModal = ({ isOpen, onClose, libraryItems, onDelete, notification 
   );
 };
 
-
 const MainPage = () => {
+  const [theses, setTheses] = useState([]);
+  const [error, setError] = useState(null);
   const [query, setQuery] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -51,6 +53,18 @@ const MainPage = () => {
   const [isChatbotModalOpen, setChatbotModalOpen] = useState(false);
   const [libraryItems, setLibraryItems] = useState([]);
   const [notification, setNotification] = useState('');
+
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/theses')
+        .then(response => {
+            // Filter out deleted theses
+            const activeTheses = response.data.filter(thesis => !thesis.deleted);
+            setTheses(activeTheses);
+        })
+        .catch(err => {
+            setError(err.message);
+        });
+  }, []);
 
   const toggleProfile = () => setProfileOpen(!isProfileOpen);
 
@@ -90,69 +104,18 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    const searchResults = [
-      {
-        title: 'TASKGROVE: A TREE-BASED PROJECT MANAGEMENT APPLICATION',
-        authors: 'Laxamana, Denzel D., et al.',
-        date: 'December 2023',
-        link: '#/PDFS/TaskGrove.pdf'
-      },
-      {
-        title: 'COMPAWNION: A PROFILE MANAGEMENT SYSTEM with GEO-LOCATION SYSTEM for NOAH’S ARK DOG AND CAT SHELTER, MABALACAT, PAMPANGA',
-        authors: 'De Leon, Aileen P., et al.',
-        date: 'December 2023', 
-        link: '/PDFS/CS 48_ COMPAWNION with Tables and Figures.pdf'
-      },
-      {
-        title: 'CodeQuest: When Java Programming Meets Playful Learning',
-        authors: 'Alcantara, Den Dave M., et al.',
-        date: 'December 2023',
-        link: '#/PDFS/IT-02 CODEQUEST.pdf'
-      },
-      {
-        title: 'HTEFinder: A Web Application Utilizing Geofencing Technology',
-        authors: 'CAguas, Angelica P., et al.',
-        date: 'December 2023',
-        link: '#/PDFS/HTEFINDER_ A Web Application Utilizing Geofencing Technology.pdf'
-      },
-      {
-        title: 'ANTABE: AN INTELLIGENT GUIDE STICK FOR VISUALLY IMPAIRED',
-        authors: 'Baquing, Gemiera M., et al.',
-        date: 'December 2023',
-        link: '#/PDFS/IT29-ANTABE.pdf'
-      },
-      {
-        title: 'Web-Based Equipment Maintenance Monitoring System for DHVSU Facilities',
-        authors: 'Astrologo, Neil Daryl P., et al.',
-        date: 'December 2023',
-        link: '#/PDFS/IT-22-Web-Based-Equipment-Maintenance-Monitoring-System-for-DHVSU-Facilities-1.pdf'
-      },
-      {
-        title: 'MSWD Online Financial Assistance Program Management System with SMS Notification and Status Tracking',
-        authors: 'Bucalin, Christian John Y., et al.',
-        date: 'December 2023',
-        link: '#/PDFS/MSWD Online Financial Assistance Program Management System with SMS Notification and Status Tracking.pdf'
-      },
-      {
-        title: 'PALE-NGKIHAN: ONLINE MARKET SYSTEM FOR ARAYAT RICE TRADERS',
-        authors: 'David, KC Glenn M., et al.',
-        date: 'December 2022',
-        link: '#/PDFS/IS56- PALENGKIHAN MANUSCRIPT.pdf'
-      }
-    ];
-
-    const results = searchResults.filter((result) => {
+    const results = theses.filter((thesis) => {
       return (
-        result.title.toLowerCase().includes(query.toLowerCase()) ||
-        result.authors.toLowerCase().includes(query.toLowerCase()) ||
-        result.date.toLowerCase().includes(query.toLowerCase())
+        thesis.titlename.toLowerCase().includes(query.toLowerCase()) ||
+        thesis.author.toLowerCase().includes(query.toLowerCase()) ||
+        thesis.year.toString().includes(query.toLowerCase())
       );
     });
     setFilteredResults(results);
-  }, [query]);
+  }, [query, theses]);
 
   const handleSearch = () => {
-    // Search logic...
+    // Search logic handled by the useEffect above
   };
 
   return (
@@ -203,21 +166,25 @@ const MainPage = () => {
 
           <div className="results">
             <h2>Search Results</h2>
-            {filteredResults.map((result, index) => (
-              <div key={index} className="result-item">
-                <a href={result.link} className="result-title">
-                  {result.title}
-                </a>
-                <p className="result-authors">{result.authors}</p>
-                <p className="result-date">{result.date}</p>
-                <button
-                  className="star-button"
-                  onClick={() => handleAddToLibrary(result)}
-                >
-                  <FontAwesomeIcon icon={faStar} />
-                </button>
-              </div>
-            ))}
+            {filteredResults.length === 0 ? (
+              <p>No results found</p>
+            ) : (
+              filteredResults.map((result, index) => (
+                <div key={index} className="result-item">
+                  <a href={result.link} className="result-title" target="_blank" rel="noopener noreferrer">
+                    {result.titlename}
+                  </a>
+                  <p className="result-authors">{result.author}</p>
+                  <p className="result-year">{result.year}</p>
+                  <button
+                    className="star-button"
+                    onClick={() => handleAddToLibrary(result)}
+                  >
+                    <FontAwesomeIcon icon={faStar} />
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
