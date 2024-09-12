@@ -79,6 +79,7 @@ const MainPage = () => {
       );
     });
     setFilteredResults(results);
+     setCurrentPage(1); 
   }, [query, theses]);
 
   const indexOfLastResult = currentPage * resultsPerPage;

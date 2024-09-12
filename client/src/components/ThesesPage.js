@@ -17,6 +17,10 @@ const ThesesPage = () => {
     const [isEditFormModalOpen, setIsEditFormModalOpen] = useState(false); // State for EditForm modal
     const [selectedThesis, setSelectedThesis] = useState(null); // State for selected thesis to edit
     const [sidebarVisible, setSidebarVisible] = useState(false);
+    
+    // Pagination states
+    const [currentPage, setCurrentPage] = useState(1);
+    const [resultsPerPage] = useState(5); // You can adjust this number
 
     useEffect(() => {
         // Fetch data from the backend
@@ -90,6 +94,18 @@ const ThesesPage = () => {
             thesis.year.toString().includes(searchQuery)
     );
 
+    // Pagination logic
+    const indexOfLastThesis = currentPage * resultsPerPage;
+    const indexOfFirstThesis = indexOfLastThesis - resultsPerPage;
+    const currentTheses = filteredTheses.slice(indexOfFirstThesis, indexOfLastThesis);
+    
+    const totalPages = Math.ceil(filteredTheses.length / resultsPerPage);
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    // Toggle Sidebar function
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
@@ -130,7 +146,7 @@ const ThesesPage = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredTheses.map((thesis) => (
+                                {currentTheses.map((thesis) => (
                                     <tr key={thesis._id}>
                                         <td>{thesis.titlename}</td>
                                         <td>{thesis.category}</td>
@@ -145,6 +161,21 @@ const ThesesPage = () => {
                                 ))}
                             </tbody>
                         </table>
+                        <div className="pagination">
+                            <button
+                                onClick={() => handlePageChange(currentPage - 1)}
+                                disabled={currentPage === 1}
+                            >
+                                Previous
+                            </button>
+                            <span>Page {currentPage} of {totalPages}</span>
+                            <button
+                                onClick={() => handlePageChange(currentPage + 1)}
+                                disabled={currentPage === totalPages}
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
 
                     {/* Form Modal */}
