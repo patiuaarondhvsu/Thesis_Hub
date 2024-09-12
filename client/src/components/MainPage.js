@@ -53,6 +53,10 @@ const MainPage = () => {
   const [isChatbotModalOpen, setChatbotModalOpen] = useState(false);
   const [libraryItems, setLibraryItems] = useState([]);
   const [notification, setNotification] = useState('');
+  
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultsPerPage] = useState(5);
 
   useEffect(() => {
     axios.get('http://localhost:5000/api/theses')
@@ -65,6 +69,32 @@ const MainPage = () => {
             setError(err.message);
         });
   }, []);
+
+  useEffect(() => {
+    const results = theses.filter((thesis) => {
+      return (
+        thesis.titlename.toLowerCase().includes(query.toLowerCase()) ||
+        thesis.author.toLowerCase().includes(query.toLowerCase()) ||
+        thesis.year.toString().includes(query.toLowerCase())
+      );
+    });
+    setFilteredResults(results);
+  }, [query, theses]);
+
+  const indexOfLastResult = currentPage * resultsPerPage;
+  const indexOfFirstResult = indexOfLastResult - resultsPerPage;
+  const currentResults = filteredResults.slice(indexOfFirstResult, indexOfLastResult);
+
+  const totalPages = Math.ceil(filteredResults.length / resultsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pageNumbers.push(i);
+  }
 
   const toggleProfile = () => setProfileOpen(!isProfileOpen);
 
@@ -103,19 +133,19 @@ const MainPage = () => {
     setTimeout(() => setNotification(''), 3000);
   };
 
-  useEffect(() => {
-    const results = theses.filter((thesis) => {
-      return (
-        thesis.titlename.toLowerCase().includes(query.toLowerCase()) ||
-        thesis.author.toLowerCase().includes(query.toLowerCase()) ||
-        thesis.year.toString().includes(query.toLowerCase())
-      );
-    });
-    setFilteredResults(results);
-  }, [query, theses]);
-
   const handleSearch = () => {
     // Search logic handled by the useEffect above
+  };
+
+  const showPDF = (pdf) => {
+    // to encoded and to use read the spaces as %
+    const encodedPdf = encodeURIComponent(pdf);
+    window.open(`http://localhost:5000/files/${encodedPdf}`, "_blank", "noreferrer");
+  };
+
+  const handleTitleClick = (result) => {
+    // Trigger the PDF opening
+    showPDF(result.filename); // Assuming `filename` contains the PDF file path or name
   };
 
   return (
@@ -167,13 +197,17 @@ const MainPage = () => {
           <div className="results">
             <h2>Search Results</h2>
             {filteredResults.length === 0 ? (
-              <p>No results found</p>
+              <p>Loading...</p>
             ) : (
-              filteredResults.map((result, index) => (
+              currentResults.map((result, index) => (
                 <div key={index} className="result-item">
-                  <a href={result.link} className="result-title" target="_blank" rel="noopener noreferrer">
+                  <p
+                    className="result-title"
+                    onClick={() => handleTitleClick(result)}
+                    style={{ cursor: 'pointer' }} // Ensure the title appears clickable
+                  >
                     {result.titlename}
-                  </a>
+                  </p>
                   <p className="result-authors">{result.author}</p>
                   <p className="result-year">{result.year}</p>
                   <button
@@ -185,6 +219,22 @@ const MainPage = () => {
                 </div>
               ))
             )}
+          </div>
+          
+          <div className="pagination">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span>Page {currentPage} of {totalPages}</span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
           </div>
         </div>
 

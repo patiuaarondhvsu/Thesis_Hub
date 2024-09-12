@@ -3,7 +3,8 @@
   padding: 20px;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 80px); /* Adjusts for header/footer height */
+  height: calc(120vh - 80px); /* Adjusts for header/footer height */
+  
   }
   
   .search-bar {
@@ -16,18 +17,24 @@
   .theses-table {
     width: 100%;
     margin-bottom: 20px;
+    
   }
   
   .theses-table th, .theses-table td {
     border: 1px solid #ddd;
     padding: 10px;
     width: 10px;
+    
+
   }
   
   .edit-button {
     margin-right: 5px;
-    color: black;
+    color: white;
     width: auto;
+    background-color: #5bc0de  ;
+    border-color: transparent;
+    font-size: 15px;
   }
   .delete-button{
     background-color: #DB4437;
@@ -109,9 +116,9 @@
   }
   
   .upload-button {
-    background-color: #5bc0de;
-    right: 0;
-    width: 7%;
+    background-color: #007bff;;
+
+    width: 8%;
     color: white;
     padding: 10px ;
     border: none;
@@ -127,7 +134,7 @@
   }
   
   .upload-button:hover {
-  
+  background-color: none;
   }
   
 

@@ -1,11 +1,21 @@
 const { Router } = require('express');
 const router = Router();
 const multer = require('multer');
+const path = require('path');
 const ThesisCollection = require('../src/thesisdb');
-const RCDCollection = require('../src/rcd'); 
+const RCDCollection = require('../src/rcd');
 
-// Multer Configuration for In-Memory Storage
-const storage = multer.memoryStorage();
+// Multer Configuration for Disk Storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, '../public/files')); // Specify the directory to save files
+  },
+  filename: function (req, file, cb) {
+    // Use the original file name
+    cb(null, file.originalname);
+  }
+});
+
 const upload = multer({ storage: storage });
 
 // Handle form submission with file upload
@@ -24,8 +34,8 @@ router.post('/api/upload', upload.single('thesisPDF'), async (req, res) => {
       category,
       year,
       author,
-      filename: req.file.originalname,
-      fileBuffer: req.file.buffer.toString('base64')
+      filename: req.file.originalname, // Use the original file name
+      filePath: path.join('files', req.file.originalname) // Store the relative file path
     });
 
     // Save Thesis document to MongoDB

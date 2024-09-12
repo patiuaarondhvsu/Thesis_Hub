@@ -52,6 +52,8 @@ app.use(express.static('public'));
 app.use('/css', express.static(path.join(__dirname, 'public/css')));
 app.use('/js', express.static(path.join(__dirname, 'public/js')));
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
+// to read pdf files
+app.use('/files', express.static(path.join(__dirname, 'files')));
 
 // Routes
 app.use(profileRoute);

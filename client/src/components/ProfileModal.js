@@ -55,16 +55,7 @@ const ProfileModal = ({ isOpen, onClose }) => {
       <div className="modal-content2">
         <h2>Edit My Profile</h2>
         <div className="form-group">
-            <label htmlFor="profile-icon">Profile Icon:</label>
-            <div className="profile-icon-wrapper">
-              <img src={profileIcon} alt="Profile Icon" className="profile-icon-preview" />
-              <input
-                type="file"
-                id="profile-icon"
-                accept="image/*"
-                onChange={handleIconChange}
-              />
-            </div>
+           
           </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">

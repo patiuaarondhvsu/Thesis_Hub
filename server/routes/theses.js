@@ -2,7 +2,6 @@ const { Router } = require('express');
 const router = Router();
 const ThesisCollection = require('../src/thesisdb'); 
 
-
 // Endpoint to get all theses
 router.get('/api/theses', async (req, res) => {
   try {

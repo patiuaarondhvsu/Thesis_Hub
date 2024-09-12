@@ -2,7 +2,7 @@
 
   display: flex;
   justify-content: center;
-  align-items: center;
+
   height: calc(100vh - 80px); /* Adjusts for header/footer height */
 }
 
@@ -16,10 +16,11 @@
 
 .logs-content {
   /* Styling for logs content */
+  background-color: none;
 }
 
 .log-table {
-  width: 97%;
+  width: 100%;
 }
 
 .log-table th, .log-table td {
@@ -30,4 +31,3 @@
 .log-table th {
   background-color: #ddd;
 }
-

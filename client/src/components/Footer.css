@@ -3,6 +3,7 @@
     padding: 10px 0;
     border-top: 1px solid #ddd;
     width: 100%;
+    
 }
 
 .footer-container {
@@ -16,8 +17,7 @@
 }
 
 .footer-logo {
-    display: flex;
-    align-items: center;
+justify-content: baseline;
     /* Adds some space below logos */
     height: 40px; /* Adjust size according to the logo */
     
@@ -29,6 +29,7 @@
     display: flex;
     gap: 15px;
     flex: 1; /* Allows the links to take up space and align better */
+    
 }
 
 .footer-links a {
