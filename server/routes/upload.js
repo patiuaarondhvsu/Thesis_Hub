@@ -11,7 +11,6 @@ const storage = multer.diskStorage({
     cb(null, path.join(__dirname, '../public/files')); // Specify the directory to save files
   },
   filename: function (req, file, cb) {
-    // Use the original file name
     cb(null, file.originalname);
   }
 });
