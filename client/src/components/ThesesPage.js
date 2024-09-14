@@ -5,7 +5,6 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import Footer from './Footer';
 import UploadForm from './UploadForm';
-import EditForm from './EditForm';
 
 const ThesesPage = () => {
     const [theses, setTheses] = useState([]);
@@ -14,19 +13,17 @@ const ThesesPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [thesisToDelete, setThesisToDelete] = useState(null);
     const [isFormModalOpen, setIsFormModalOpen] = useState(false);
-    const [isEditFormModalOpen, setIsEditFormModalOpen] = useState(false); // State for EditForm modal
-    const [selectedThesis, setSelectedThesis] = useState(null); // State for selected thesis to edit
+    const [isEditFormModalOpen, setIsEditFormModalOpen] = useState(false);
+    const [selectedThesis, setSelectedThesis] = useState(null);
     const [sidebarVisible, setSidebarVisible] = useState(false);
-    
+
     // Pagination states
     const [currentPage, setCurrentPage] = useState(1);
-    const [resultsPerPage] = useState(5); // You can adjust this number
+    const [resultsPerPage] = useState(5);
 
     useEffect(() => {
-        // Fetch data from the backend
         axios.get('http://localhost:5000/api/theses')
             .then(response => {
-                // Filter out deleted theses
                 const activeTheses = response.data.filter(thesis => !thesis.deleted);
                 setTheses(activeTheses);
             })
@@ -40,12 +37,10 @@ const ThesesPage = () => {
     };
 
     const addThesis = () => {
-        // Show UploadForm modal to add a new thesis
         openFormModal();
     };
 
     const editThesis = (thesis) => {
-        // Show EditForm modal with selected thesis data
         setSelectedThesis(thesis);
         setIsEditFormModalOpen(true);
     };
@@ -63,7 +58,6 @@ const ThesesPage = () => {
     const confirmDelete = () => {
         axios.delete(`http://localhost:5000/api/thesis/${thesisToDelete}`)
             .then(() => {
-                // Update state to remove the deleted thesis
                 setTheses(theses.filter((thesis) => thesis._id !== thesisToDelete));
                 closeModal();
             })
@@ -94,7 +88,6 @@ const ThesesPage = () => {
             thesis.year.toString().includes(searchQuery)
     );
 
-    // Pagination logic
     const indexOfLastThesis = currentPage * resultsPerPage;
     const indexOfFirstThesis = indexOfLastThesis - resultsPerPage;
     const currentTheses = filteredTheses.slice(indexOfFirstThesis, indexOfLastThesis);
@@ -105,7 +98,6 @@ const ThesesPage = () => {
         setCurrentPage(pageNumber);
     };
 
-    // Toggle Sidebar function
     const toggleSidebar = () => {
         setSidebarVisible(!sidebarVisible);
     };
@@ -185,10 +177,66 @@ const ThesesPage = () => {
 
                     {/* Edit Form Modal */}
                     {isEditFormModalOpen && selectedThesis && (
-                        <EditForm 
-                            onClose={closeEditFormModal} 
-                            existingData={selectedThesis} 
-                        />
+                        <div className="modal">
+                            <div className="modal-content">
+                                <h2>Edit Thesis</h2>
+                                <form
+                                    onSubmit={async (e) => {
+                                        e.preventDefault();
+                                        try {
+                                            const updatedThesis = {
+                                                ...selectedThesis,
+                                                // Exclude filename if not needed
+                                            };
+
+                                            await axios.put(`http://localhost:5000/api/thesis/${selectedThesis._id}`, updatedThesis);
+                                            setTheses(theses.map(thesis =>
+                                                thesis._id === selectedThesis._id ? updatedThesis : thesis
+                                            ));
+                                            closeEditFormModal();
+                                        } catch (error) {
+                                            console.error('Error updating thesis:', error);
+                                        }
+                                    }}
+                                >
+                                    <input
+                                        type="text"
+                                        name="titlename"
+                                        value={selectedThesis.titlename}
+                                        onChange={(e) => setSelectedThesis({ ...selectedThesis, titlename: e.target.value })}
+                                        placeholder="Title"
+                                        required
+                                    />
+                                    <input
+                                        type="text"
+                                        name="category"
+                                        value={selectedThesis.category}
+                                        onChange={(e) => setSelectedThesis({ ...selectedThesis, category: e.target.value })}
+                                        placeholder="Category"
+                                        required
+                                    />
+                                    <input
+                                        type="number"
+                                        name="year"
+                                        value={selectedThesis.year}
+                                        onChange={(e) => setSelectedThesis({ ...selectedThesis, year: e.target.value })}
+                                        placeholder="Year"
+                                        required
+                                    />
+                                    <input
+                                        type="text"
+                                        name="author"
+                                        value={selectedThesis.author}
+                                        onChange={(e) => setSelectedThesis({ ...selectedThesis, author: e.target.value })}
+                                        placeholder="Author"
+                                        required
+                                    />
+                                    {/* Removed filename field */}
+                                    <button type="submit">Save Changes</button>
+                                    <button type="button" onClick={closeEditFormModal}>Cancel</button>
+                                </form>
+                            </div>
+                        </div>
                     )}
 
                     {/* Delete Confirmation Modal */}
