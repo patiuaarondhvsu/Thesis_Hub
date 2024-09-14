@@ -14,6 +14,9 @@ require('dotenv').config();
 // for hashing
 const bcrypt = require('bcrypt');
 
+// for logs
+const logger = require('../src/logger');
+
 // email handler (for sending mails)
 const nodemailer = require('nodemailer');
 
@@ -300,9 +303,10 @@ router.post("/signup", async(req,res)=>{
     router.post("/login", async (req, res) => {
         try {
             const { email, password } = req.body;
-    
+            
             // Check if the user exists in the userCollection
             const user = await userCollection.findOne({ email });
+
             if (user) {
                 // User exists, check if the password matches
                 const passwordMatch = await bcrypt.compare(password, user.password);
@@ -313,13 +317,20 @@ router.post("/signup", async(req,res)=>{
                         req.session.email = email;
                         req.session.role = 'user'; // Set role to user
                         
+                        // logger if the user is successfully logged in
+                        logger.info(`User logged in: ${email}`, { user: email });
+
                         // Return JSON response instead of rendering a page
                         res.json({ success: true, message: "Login successful", user: { email: user.email, name: user.name, role: 'user' } });
                     } else {
+                        // logger not verified
+                        logger.warn(`Login attempt failed for unverified email: ${email}`, { user: email });
                         // Return JSON response for unverified email
                         res.json({ success: false, message: "Email hasn't been verified yet. Check your inbox." });
                     }
                 } else {
+                    // logger wrong password
+                    logger.warn(`Login attempt failed for email: ${email} - Wrong password`);
                     // Return JSON response for wrong password
                     res.json({ success: false, message: "Wrong password." });
                 }
@@ -332,9 +343,14 @@ router.post("/signup", async(req,res)=>{
                         req.session.email = email;
                         req.session.role = 'admin'; // Set role to admin
                         
+                        //logger admin logged in
+                        logger.info(`Admin logged in: ${email}`, { user: email });
+
                         // Return JSON response for admin login
                         res.json({ success: true, message: "Admin login successful", user: { email: admin.email, role: 'admin' } });
                     } else {
+                        // Admin wrong password
+                        logger.warn(`Admin login attempt failed for email: ${email} - Wrong password`);
                         // Return JSON response for wrong password
                         res.json({ success: false, message: "Wrong password." });
                     }
@@ -354,14 +370,20 @@ router.post("/signup", async(req,res)=>{
     
     // for log out
     router.get('/logout', (req, res) => {
+        const { email } = req.session;
+        //logger for log out
+        logger.info(`User logged out: ${email}`, { user: email });
         req.session.destroy((err) => {
-            if (err) {
-                console.error(err);
-            }
-            res.redirect('/login');
+          if (err) {
+            console.error(err);
+            return res.status(500).send('Logout failed');
+          }
+          // Set session or generate token
+          
+          res.redirect('/login');
+          
         });
-    });
-    
+      });
 
 
 // for profile

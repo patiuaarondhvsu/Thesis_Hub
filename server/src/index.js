@@ -14,6 +14,7 @@ const userviewRoute = require('../routes/userview');
 const thesisRoute = require('../routes/theses');
 const deleteRoute = require('../routes/delete');
 const editRoute = require('../routes/edit');
+const logRoute = require('../routes/logs');
 const recoverRoute = require('../routes/recover');
 
 const app = express();
@@ -63,6 +64,7 @@ app.use(userviewRoute);
 app.use(thesisRoute);
 app.use(deleteRoute);
 app.use(editRoute);
+app.use(logRoute);
 app.use(recoverRoute);
 
 // Page routes

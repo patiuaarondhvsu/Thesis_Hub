@@ -16,7 +16,9 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "winston": "^3.14.2",
+    "winston-mongodb": "^5.1.1"
   },
   "name": "thesis-hub",
   "version": "1.0.0",

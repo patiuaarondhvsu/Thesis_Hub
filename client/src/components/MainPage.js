@@ -58,6 +58,19 @@ const MainPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [resultsPerPage] = useState(5);
 
+  // logout handler
+  const handleLogout = () => {
+    axios.get('http://localhost:5000/logout')
+      .then(response => {
+        // Redirect to login page or handle redirection in another way
+        window.location.href = '/login'; 
+      })
+      .catch(error => {
+        console.error('Logout failed:', error);
+        // Optionally, show an error message to the user
+      });
+  };
+
   useEffect(() => {
     axios.get('http://localhost:5000/api/theses')
         .then(response => {
@@ -166,7 +179,7 @@ const MainPage = () => {
           {isProfileOpen && (
             <div className="profile-dropdown">
               <button onClick={openProfileModal}>EDIT PROFILE</button>
-              <button href="/">LOGOUT</button>
+              <button onClick={handleLogout}>LOGOUT</button>
             </div>
           )}
         </div>
