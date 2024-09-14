@@ -1,3 +1,8 @@
+.App-results{
+  overflow-y: auto; /* Enable vertical scrolling */
+  height: calc(100vh - 80px); /* Adjusts for header/footer height */
+}
+  
 .main-page {
   display: flex;
    justify-content: center;
@@ -5,6 +10,7 @@
    flex-direction: column;
    padding: 1rem;
    height: calc(100vh - 80px); /* Adjusts for header/footer height */
+   
    }
    
  
@@ -41,33 +47,24 @@
    }
    
    .profile-dropdown {
- 
      display: flex;
      flex-direction: column;
      position: absolute;
      right: 0;
-   
      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
      z-index: 1;
      width: 200px;
    }
  
+   button {
+    text-decoration: none;
+    color: black;
+    background-color: white;
+    border: white; 
+    font-size: 15px;
+  }
+
    
-   .profile-dropdown button,
-   .profile-dropdown a {
-     padding: 10px;
-     text-decoration: none;
-     color: black;
-     display: flex;
-     align-items: center;
-   }
-   
-   .profile-dropdown button:hover,
- 
-   .profile-dropdown a:hover h2{
-    
-   text-decoration: none;
-   }
    .navigation {
      display: flex;
      gap: 15px;
@@ -142,8 +139,9 @@
    .results {
      margin-top: 20px;
      max-height: 400px; /* Adjust based on your preference */
-     overflow-y: scroll; /* Enable vertical scrolling */
-     max-width: 900px;
+
+  
+     max-width: 100%;
    }
    
    .result-item {
@@ -157,7 +155,8 @@
      margin-top: 20px;
      max-height: 400px; /* Adjust based on your preference */
      overflow-y: scroll; /* Enable vertical scrolling */
-     max-width: 900px;
+     max-width: 90%;
+     
    }
  
    .library-item {
@@ -217,10 +216,16 @@
    }
  
    .content {
-     flex-grow: 1;
-     padding: 20px;
-   }
+    flex-grow: 1;
+    padding: 20px;
+    display: flex; /* Use flexbox layout */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column; /* Arrange items in a column */
+    
+ 
    
+  }
    
    .sidebar.hidden {
      transform: translateX(-100%);
@@ -307,9 +312,11 @@
  
  /* Pagination styles */
  .pagination {
-   display: flex;
-   justify-content: center;
-   margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  justify-content: center;
+ padding: 1%;
  }
  
  .pagination button {

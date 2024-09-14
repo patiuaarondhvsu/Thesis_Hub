@@ -17,10 +17,10 @@
 }
 
 .footer-logo {
-justify-content: baseline;
+    
     /* Adds some space below logos */
     height: 40px; /* Adjust size according to the logo */
-    
+
 }
 
 
@@ -55,10 +55,44 @@ justify-content: baseline;
     text-decoration: underline;
 }
 
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    position: relative;
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  /* Close Button */
+  .modal-content button {
+
+    top: 10px;
+    right: 10px;
+  }
+  
+
 @media screen and (max-width: 768px) {
     .footer-container {
         flex-direction: column; /* Stacks elements vertically on smaller screens */
-        align-items: flex-start; /* Aligns items to start for better readability */
+        align-items: flex; /* Aligns items to start for better readability */
+       
     }
 
     .footer-links, .footer-text {
@@ -68,5 +102,13 @@ justify-content: baseline;
 
     .footer-logo {
         justify-content: center; /* Centers logos on smaller screens */
+        margin-bottom: 15px; /* Adds some space below each section */
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+      width: 95%;
+      overflow-y: scroll;
     }
 }

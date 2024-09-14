@@ -1,31 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Footer.css';
 
-function Footer() {
+// Modal Component
+const Modal = ({ isOpen, onClose, content }) => {
+  if (!isOpen) return null;
+
   return (
-    <footer class="footer">
-    <div class="footer-container">
-        <div class="footer-logo">
-          
-        </div>
-        <div class="footer-links">
-            <a>  <img src="/ccslogo.png" alt=" " class="footer-logo" /> </a>
-            <a href="#">About Thesis Hub</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Contact Us</a>
-        </div>
-        <div class="footer-text">
-            <p>
-                We use cookies to help provide and enhance our service. By continuing you agree to the 
-                <a href="#"> use of cookies</a>.
-            </p>
-            <p>Copyright © 2024. All rights reserved.</p>
-        </div>
-        <div class="footer-logo">
-           
-        </div>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <h2>{content.title}</h2>
+        <p>{content.body}</p>
+        <button onClick={onClose}>Close</button>
+      </div>
     </div>
-</footer>
+  );
+};
+
+function Footer() {
+  const [activeModal, setActiveModal] = useState(null);
+
+  const openModal = (modalType) => setActiveModal(modalType);
+  const closeModal = () => setActiveModal(null);
+
+  const modalContent = {
+    about: {
+      title: 'About Us',
+      body: 'This is where you can provide information about your company or team. You can include details about your mission, vision, and values.'
+    },
+    privacy: {
+      title: 'Privacy Policy',
+      body: 'Here you can describe your privacy policy, including how user data is collected, used, and protected.'
+    },
+    contact: {
+      title: 'Contact Us',
+      body: 'Provide contact information here, such as email addresses, phone numbers, and other ways to get in touch with you.'
+    }
+  };
+
+  return (
+    <footer className="footer">
+      <div className="footer-container">
+        <div className="footer-logo">
+          <img src="/ccslogo.png" alt="" className="footer-logo" /> 
+        </div>
+        <div className="footer-links">
+          <a href="#" onClick={(e) => { e.preventDefault(); openModal('about'); }}>About Us</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); openModal('privacy'); }}>Privacy Policy</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); openModal('contact'); }}>Contact Us</a>
+        </div>
+        <div className="footer-text">
+          <p>
+            We use cookies to help provide and enhance our service. By continuing you agree to the 
+            <a href="#"> use of cookies</a>.
+          </p>
+          <p>Copyright © 2024. All rights reserved.</p>
+        </div>
+        <div className="footer-logo"></div>
+      </div>
+
+      <Modal isOpen={activeModal === 'about'} onClose={closeModal} content={modalContent.about} />
+      <Modal isOpen={activeModal === 'privacy'} onClose={closeModal} content={modalContent.privacy} />
+      <Modal isOpen={activeModal === 'contact'} onClose={closeModal} content={modalContent.contact} />
+    </footer>
   );
 }
 

@@ -159,22 +159,20 @@ const MainPage = () => {
           <button className="chatbot-button" onClick={openChatbotModal}>Chatbot</button>
         </div>
        
-        <div className="profile-section">
-          <FontAwesomeIcon
-            icon={faUserCircle}
-            className="profile-icon"
-            onClick={toggleProfile}
-          />
+        <div className="profile-dropdown-button">
+    
+            <button onClick={toggleProfile}> ☰ </button>
+          
           {isProfileOpen && (
             <div className="profile-dropdown">
-              <button onClick={openProfileModal}>My Profile</button>
-              <a href="/">Logout</a>
+              <button onClick={openProfileModal}>EDIT PROFILE</button>
+              <button href="/">LOGOUT</button>
             </div>
           )}
         </div>
       </header>
      
-      <div className="main-page">
+      <div className="App-results">
         <div className="content">
           <div className="search-bar">
             <input
@@ -196,7 +194,7 @@ const MainPage = () => {
           </div>
 
           <div className="results">
-            <h2>Search Results</h2>
+            
             {filteredResults.length === 0 ? (
               <p>Loading...</p>
             ) : (
@@ -222,21 +220,7 @@ const MainPage = () => {
             )}
           </div>
           
-          <div className="pagination">
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span>Page {currentPage} of {totalPages}</span>
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
+          
         </div>
 
         <Date
@@ -272,8 +256,19 @@ const MainPage = () => {
             <p className="notification-message">{notification}</p>
           </div>
         )}
+        
       </div>
-
+      <div className="pagination">
+      {pageNumbers.map(number => (
+                    <button
+                      key={number}
+                      onClick={() => handlePageChange(number)}
+                      className={number === currentPage ? 'active' : ''}
+                    >
+                      {number}
+                    </button>
+                  ))}
+          </div>
       <Footer />
     </div>
   );

@@ -1,3 +1,21 @@
+
+.profile-dropdown button,
+   .profile-dropdown a {
+     padding: 15px;
+     text-decoration: none;
+     color: black;
+     background-color: white;
+     display: flex;
+     align-items: center;
+   }
+   
+   .profile-dropdown button:hover,
+   .profile-dropdown a:hover {
+    background-color: gray;
+    text-decoration: none;
+   }
+   
+
 .modal-overlay {
   position: fixed;
   top: 0;
