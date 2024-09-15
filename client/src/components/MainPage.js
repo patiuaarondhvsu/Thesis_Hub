@@ -60,15 +60,15 @@ const MainPage = () => {
 
   // logout handler
   const handleLogout = () => {
-    axios.get('http://localhost:5000/logout')
-      .then(response => {
-        // Redirect to login page or handle redirection in another way
-        window.location.href = '/login'; 
-      })
-      .catch(error => {
-        console.error('Logout failed:', error);
-        // Optionally, show an error message to the user
-      });
+    axios.get('http://localhost:5000/logout', { withCredentials: true })
+  .then(response => {
+    // Redirect to login page or handle redirection in another way
+    window.location.href = '/login'; 
+  })
+  .catch(error => {
+    console.error('Logout failed:', error);
+    // Optionally, show an error message to the user
+  });
   };
 
   useEffect(() => {

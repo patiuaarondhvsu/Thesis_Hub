@@ -9,8 +9,6 @@ const UserSchema = new mongoose.Schema({
     password: String,
     dateOfBirth: Date,
     verified: Boolean,
-    lastLogin: Date,
-    lastLogout: Date,
 })
 
 const userCollection = new mongoose.model("UserCollection",UserSchema)

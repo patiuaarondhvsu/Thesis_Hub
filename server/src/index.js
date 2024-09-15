@@ -14,7 +14,7 @@ const userviewRoute = require('../routes/userview');
 const thesisRoute = require('../routes/theses');
 const deleteRoute = require('../routes/delete');
 const editRoute = require('../routes/edit');
-const logRoute = require('../routes/logs');
+const logsRoute = require('../routes/logs');
 const recoverRoute = require('../routes/recover');
 
 const app = express();
@@ -30,13 +30,18 @@ app.engine('handlebars', expbs.engine({
     layoutsDir: path.join(__dirname, 'templates/layouts')
 }));
 
+// for session storing
+const MongoStore = require('connect-mongo');
+
 // Session middleware
 app.use(session({
-    secret: 'IT56secret',
-    resave: true,
-    saveUninitialized: false,
-    cookie: { maxAge: 60000 * (60 * 24) },
-    store: new session.MemoryStore()
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60000 * (60 * 24), secure: false },
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_URL,
+        collectionName: 'sessions'})
 }));
 
 // Middlewares
@@ -64,7 +69,7 @@ app.use(userviewRoute);
 app.use(thesisRoute);
 app.use(deleteRoute);
 app.use(editRoute);
-app.use(logRoute);
+app.use(logsRoute);
 app.use(recoverRoute);
 
 // Page routes

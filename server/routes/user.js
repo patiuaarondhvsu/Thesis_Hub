@@ -5,6 +5,9 @@ const path = require('path');
 // for security/authentication and session
 const requireLogin = require('../middleware/requireLogin');
 
+// for logs
+const Logs = require('../src/logdb');
+
 // for routers
 const router = Router();
 
@@ -15,7 +18,6 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 
 // for logs
-const logger = require('../src/logger');
 
 // email handler (for sending mails)
 const nodemailer = require('nodemailer');
@@ -300,94 +302,85 @@ router.post("/signup", async(req,res)=>{
         res.sendFile(path.join(__dirname, "/templates/verified.html"));
     })
 
-    router.post("/login", async (req, res) => {
+    router.post('/login', async (req, res) => {
         try {
             const { email, password } = req.body;
-            
-            // Check if the user exists in the userCollection
-            const user = await userCollection.findOne({ email });
-
-            if (user) {
-                // User exists, check if the password matches
-                const passwordMatch = await bcrypt.compare(password, user.password);
-                if (passwordMatch) {
-                    if (user.verified) {
-                        // Set session or generate token
-                        req.session.authenticated = true;
-                        req.session.email = email;
-                        req.session.role = 'user'; // Set role to user
-                        
-                        // logger if the user is successfully logged in
-                        logger.info(`User logged in: ${email}`, { user: email });
-
-                        // Return JSON response instead of rendering a page
-                        res.json({ success: true, message: "Login successful", user: { email: user.email, name: user.name, role: 'user' } });
-                    } else {
-                        // logger not verified
-                        logger.warn(`Login attempt failed for unverified email: ${email}`, { user: email });
-                        // Return JSON response for unverified email
-                        res.json({ success: false, message: "Email hasn't been verified yet. Check your inbox." });
-                    }
+            let user = await userCollection.findOne({ email });
+            let role = 'user';
+    
+            if (!user) {
+                const admin = await admincollection.findOne({ email });
+                if (admin && await bcrypt.compare(password, admin.password)) {
+                    req.session.authenticated = true;
+                    req.session.email = email;
+                    req.session.role = 'admin';
+    
+                    // Log the admin login
+                    await new Logs({ message: `Admin ${email} logged in` }).save();
+    
+                    return res.json({ 
+                        success: true, 
+                        message: "Admin login successful", 
+                        user: { email: admin.email, role: 'admin' } 
+                    });
                 } else {
-                    // logger wrong password
-                    logger.warn(`Login attempt failed for email: ${email} - Wrong password`);
-                    // Return JSON response for wrong password
-                    res.json({ success: false, message: "Wrong password." });
+                    return res.json({ success: false, message: "Wrong password or user not found." });
+                }
+            }
+    
+            const passwordMatch = await bcrypt.compare(password, user.password);
+            if (passwordMatch) {
+                if (user.verified) {
+                    req.session.authenticated = true;
+                    req.session.email = email;
+                    req.session.role = 'user';
+    
+                    // Log the user login
+                    await new Logs({ message: `User ${email} logged in` }).save();
+    
+                    return res.json({ 
+                        success: true, 
+                        message: "Login successful", 
+                        user: { email: user.email, name: user.name, role: 'user' } 
+                    });
+                } else {
+                    return res.json({ success: false, message: "Email hasn't been verified yet. Check your inbox." });
                 }
             } else {
-                // Check if the user exists in the admincollection
-                const admin = await admincollection.findOne({ email });
-                if (admin) {
-                    // Admin exists, check if the password matches
-                    if (admin.password === password) {
-                        req.session.email = email;
-                        req.session.role = 'admin'; // Set role to admin
-                        
-                        //logger admin logged in
-                        logger.info(`Admin logged in: ${email}`, { user: email });
-
-                        // Return JSON response for admin login
-                        res.json({ success: true, message: "Admin login successful", user: { email: admin.email, role: 'admin' } });
-                    } else {
-                        // Admin wrong password
-                        logger.warn(`Admin login attempt failed for email: ${email} - Wrong password`);
-                        // Return JSON response for wrong password
-                        res.json({ success: false, message: "Wrong password." });
-                    }
-                } else {
-                    // Return JSON response for user not found
-                    res.json({ success: false, message: "User not found." });
-                }
+                return res.json({ success: false, message: "Wrong password." });
             }
         } catch (error) {
             console.error(error);
-            // Return JSON response for a generic error
             res.status(500).json({ success: false, message: "An error occurred during login." });
         }
     });
     
-      
+
+
+    // For log out
+    router.get('/logout', requireLogin, (req, res) => {
+        const email = req.session.email || 'unknown'; // Default to 'unknown' if email is not set
     
-    // for log out
-    router.get('/logout', (req, res) => {
-        const { email } = req.session;
-        //logger for log out
-        logger.info(`User logged out: ${email}`, { user: email });
-        req.session.destroy((err) => {
-          if (err) {
-            console.error(err);
-            return res.status(500).send('Logout failed');
-          }
-          // Set session or generate token
-          
-          res.redirect('/login');
-          
-        });
-      });
-
-
+        // Log the logout event
+        new Logs({ message: `User ${email} logged out` }).save()
+            .then(() => {
+                req.session.destroy((err) => {
+                    if (err) {
+                        console.error('Error destroying session:', err);
+                        return res.status(500).send('Logout failed');
+                    }
+                    console.log('Session destroyed successfully');
+                    res.redirect('/login');
+                });
+            })
+            .catch(err => {
+                console.error('Error logging out:', err);
+                res.status(500).send('Error logging out');
+            });
+    });
+    
 // for profile
-router.get("/profile", requireLogin, (req, res) => {
+router.get('/profile', requireLogin, (req, res) => {
     const { email } = req.session;
     
     userCollection.findOne({ email }).then(user => {
