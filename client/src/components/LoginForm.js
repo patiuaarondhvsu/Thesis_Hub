@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import useAuth from context
 import './AuthForm.css';
 import Header from './Header';
 import Footer from './Footer';
@@ -10,36 +11,39 @@ const LoginForm = ({ onSwitchToRegister }) => {
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const { login } = useAuth(); // Use login function from context
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log('Form submitted');
+    e.preventDefault();
+    console.log('Attempting to login with:', { email, password });
 
-        try {
-            const response = await axios.post('http://localhost:5000/login', {
-                email,
-                password
-            }, {
-                withCredentials: true
-            });
+    try {
+        const response = await axios.post('http://localhost:5000/login', {
+            email,
+            password
+        }, {
+            withCredentials: true
+        });
 
-            console.log(response.data);
+        console.log('Login response:', response.data);
 
-            if (response.data.success) {
-                if (response.data.user.role === 'admin') {
-                    navigate('/logs'); // Redirect to logs page if user is an admin
-                } else {
-                    navigate('/main'); // Redirect to main page if user is a regular user
-                }
+        if (response.data.success) {
+            localStorage.setItem('token', response.data.token); // Ensure your server is sending a token if needed
+            login(response.data.user.role); // Set role in context
+            if (response.data.user.role === 'admin') {
+                navigate('/logs');
             } else {
-                setErrorMessage(response.data.message || 'Login failed');
-                console.log(response.data.message);
+                navigate('/main');
             }
-        } catch (error) {
-            setErrorMessage('An error occurred during login. Please try again.');
-            console.error('Login failed', error);
+        } else {
+            setErrorMessage(response.data.message || 'Login failed');
         }
-    };
+    } catch (error) {
+        console.error('Login error:', error);
+        setErrorMessage('An error occurred during login. Please try again.');
+    }
+};
+
 
     return (
         <div className="App">

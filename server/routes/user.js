@@ -302,55 +302,54 @@ router.post("/signup", async(req,res)=>{
         res.sendFile(path.join(__dirname, "/templates/verified.html"));
     })
 
-    router.post('/login', async (req, res) => {
+    router.post("/login", async (req, res) => {
         try {
             const { email, password } = req.body;
-            let user = await userCollection.findOne({ email });
-            let role = 'user';
     
-            if (!user) {
-                const admin = await admincollection.findOne({ email });
-                if (admin && await bcrypt.compare(password, admin.password)) {
-                    req.session.authenticated = true;
-                    req.session.email = email;
-                    req.session.role = 'admin';
-    
-                    // Log the admin login
-                    await new Logs({ message: `Admin ${email} logged in` }).save();
-    
-                    return res.json({ 
-                        success: true, 
-                        message: "Admin login successful", 
-                        user: { email: admin.email, role: 'admin' } 
-                    });
+            // Check if the user exists in the userCollection
+            const user = await userCollection.findOne({ email });
+            if (user) {
+                // User exists, check if the password matches
+                const passwordMatch = await bcrypt.compare(password, user.password);
+                if (passwordMatch) {
+                    if (user.verified) {
+                        // Set session or generate token
+                        req.session.authenticated = true;
+                        req.session.email = email;
+                        new Logs({ message: `User ${email} logged in` }).save()
+                        // Return JSON response instead of rendering a page
+                        res.json({ success: true, message: "Login successful", user: { email: user.email, name: user.name } });
+                    } else {
+                        // Return JSON response for unverified email
+                        res.json({ success: false, message: "Email hasn't been verified yet. Check your inbox." });
+                    }
                 } else {
-                    return res.json({ success: false, message: "Wrong password or user not found." });
-                }
-            }
-    
-            const passwordMatch = await bcrypt.compare(password, user.password);
-            if (passwordMatch) {
-                if (user.verified) {
-                    req.session.authenticated = true;
-                    req.session.email = email;
-                    req.session.role = 'user';
-    
-                    // Log the user login
-                    await new Logs({ message: `User ${email} logged in` }).save();
-    
-                    return res.json({ 
-                        success: true, 
-                        message: "Login successful", 
-                        user: { email: user.email, name: user.name, role: 'user' } 
-                    });
-                } else {
-                    return res.json({ success: false, message: "Email hasn't been verified yet. Check your inbox." });
+                    // Return JSON response for wrong password
+                    res.json({ success: false, message: "Wrong password." });
                 }
             } else {
-                return res.json({ success: false, message: "Wrong password." });
+                // Check if the user exists in the admincollection
+                const admin = await admincollection.findOne({ email });
+                if (admin) {
+                    // Admin exists, check if the password matches
+                    if (admin.password === password) {
+                        req.session.authenticated = true;
+                        req.session.email = email;
+    
+                        // Return JSON response for admin login
+                        res.json({ success: true, message: "Admin login successful", user: { email: admin.email, role: 'admin' } });
+                    } else {
+                        // Return JSON response for wrong password
+                        res.json({ success: false, message: "Wrong password." });
+                    }
+                } else {
+                    // Return JSON response for user not found
+                    res.json({ success: false, message: "User not found." });
+                }
             }
         } catch (error) {
             console.error(error);
+            // Return JSON response for a generic error
             res.status(500).json({ success: false, message: "An error occurred during login." });
         }
     });

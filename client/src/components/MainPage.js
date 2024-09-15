@@ -63,7 +63,7 @@ const MainPage = () => {
     axios.get('http://localhost:5000/logout', { withCredentials: true })
   .then(response => {
     // Redirect to login page or handle redirection in another way
-    window.location.href = '/login'; 
+    window.location.href = '/'; 
   })
   .catch(error => {
     console.error('Logout failed:', error);
