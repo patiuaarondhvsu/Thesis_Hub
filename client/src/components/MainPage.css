@@ -339,18 +339,17 @@
    background: #f1f1f1;
  }
 
-.pdf-overlay {
+ .pdf-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  overflow: hidden;
 }
 
 .pdf-iframe-container {
@@ -360,11 +359,28 @@
   max-width: 1200px;
   max-height: 80vh;
   background: white;
+  overflow: hidden;
 }
 
 .pdf-iframe {
   width: 100%;
   height: 100%;
+  border: none;
+  /* iframe styles */
+}
+
+.blank-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 1.5%;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0); /* Transparent overlay */
+  pointer-events: auto; /* Block interactions */
+  z-index: 20; /* Ensure it's above the iframe */
+  cursor: not-allowed; /* Visual cue */
+  user-select: none; /* Attempt to prevent selection */
+  overflow: hidden; /* Prevents accidental scroll capture */
 }
 
 .pdf-close-button {
@@ -377,9 +393,9 @@
   padding: 10px;
   cursor: pointer;
   border-radius: 5px;
+  z-index: 30; /* Ensure it's above all other layers */
 }
 
 .pdf-close-button:hover {
   background: #555;
 }
-

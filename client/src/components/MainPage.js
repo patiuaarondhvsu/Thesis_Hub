@@ -189,18 +189,19 @@ const MainPage = () => {
       </header>
      
       {isPdfVisible && (
-        <div className="pdf-overlay">
-          <div className="pdf-iframe-container">
-            <button className="pdf-close-button" onClick={() => setPdfVisible(false)}>Close PDF</button>
-            <iframe
-              src={pdfSrc}
-              title="PDF Viewer"
-              frameBorder="0"
-              className="pdf-iframe"
-            ></iframe>
-          </div>
-        </div>
-      )}
+  <div className="pdf-overlay">
+    <div className="pdf-iframe-container">
+      <button className="pdf-close-button" onClick={() => setPdfVisible(false)}>Close PDF</button>
+      <iframe
+        src={pdfSrc}
+        title="PDF Viewer"
+        frameBorder="0"
+        className="pdf-iframe"
+      ></iframe>
+      <div className="blank-overlay" /> {/* Blocking overlay */}
+    </div>
+  </div>
+)}
 
       <div className="App-results">
         <div className="content">
