@@ -53,7 +53,9 @@ const MainPage = () => {
   const [isChatbotModalOpen, setChatbotModalOpen] = useState(false);
   const [libraryItems, setLibraryItems] = useState([]);
   const [notification, setNotification] = useState('');
-  
+  const [pdfSrc, setPdfSrc] = useState(''); // State for PDF source
+  const [isPdfVisible, setPdfVisible] = useState(false); // State for PDF visibility
+
   // Pagination states
   const [currentPage, setCurrentPage] = useState(1);
   const [resultsPerPage] = useState(5);
@@ -158,8 +160,9 @@ const MainPage = () => {
   };
 
   const handleTitleClick = (result) => {
-    // Trigger the PDF opening
-    showPDF(result.filename); // Assuming `filename` contains the PDF file path or name
+    const encodedPdf = encodeURIComponent(result.filename);
+    setPdfSrc(`http://localhost:5000/files/${encodedPdf}#toolbar=0`); // Set PDF source with toolbar=0
+    setPdfVisible(true); // Show the PDF iframe
   };
 
   return (
@@ -185,6 +188,19 @@ const MainPage = () => {
         </div>
       </header>
      
+      {isPdfVisible && (
+        <div className="pdf-iframe-container">
+          <button onClick={() => setPdfVisible(false)}>Close PDF</button>
+          <iframe
+            src={pdfSrc}
+            title="PDF Viewer"
+            width="100%"
+            height="600px"
+            frameBorder="0"
+          ></iframe>
+        </div>
+      )}
+
       <div className="App-results">
         <div className="content">
           <div className="search-bar">
