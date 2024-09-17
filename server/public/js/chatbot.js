@@ -15,7 +15,6 @@ var arrayOfPossibleMessage = [
     {message: "what is thesis", response: "A thesis, or dissertation, is a document submitted in support of candidature for an academic degree or professional qualification presenting the author's research and findings"},
     {message: "what is abstract", response: "An abstract is a brief summary of a research article, thesis, review, conference proceeding, or any in-depth analysis of a particular subject and is often used to help the reader quickly ascertain the paper's purpose."},
     {message: "what is introduction", response: "The introduction allows you to orient the reader to your research project and preview the organisation of your thesis. In the introduction, state what the topic is about, explain why it needs to be further researched and introduce your research question(s) or hypothesis."},
-
     ]
 
 

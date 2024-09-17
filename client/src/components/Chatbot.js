@@ -7,9 +7,17 @@ const Chatbot = () => {
 
   const arrayOfPossibleMessages = [
     { message: "hi", response: "hello" },
-    { message: "what is thesis", response: "A thesis, or dissertation, is a document submitted in support of candidature for an academic degree or professional qualification presenting the author's research and findings" },
-    { message: "what is abstract", response: "An abstract is a brief summary of a research article, thesis, review, conference proceeding, or any in-depth analysis of a particular subject and is often used to help the reader quickly ascertain the paper's purpose." },
-    { message: "what is introduction", response: "The introduction allows you to orient the reader to your research project and preview the organisation of your thesis. In the introduction, state what the topic is about, explain why it needs to be further researched and introduce your research question(s) or hypothesis." },
+    { message: "which study is a website?", response: "Web-Based Equipment Maintenance Monitoring System for DHVSU Facilities, PALENGKIHAN, CODEQUEST, Monitoring System for DHVSU Facilities." },
+    { message: "which study is a web application?", response: " Taskgrove, Online Financial Assistance, HTEFinder, COMPAWNION." },
+    { message: "which study used quantitative methodology?", response: "CODEQUEST, Taskgrove, HTEFinder" },
+    { message: "which study used mix method?", response: "COMPAWNION Web-Based Equipment Maintenance Monitoring System for DHVSU Facilities" },
+    { message: "Which study uses an Iterative Software Development Methodology? ", response: "MSWD Online Financial Assistance, ANTABE, HTEFINDER, COMPAWNION." },
+    { message: "Which study uses an agile Software Development Methodology?", response: "Taskgrove,Equipment maintenance monitoring,CODEQUEST,PALENGKIHAN." },
+    { message: "Which studies are related to animals? ", response: "COMPAWNION." },
+    { message: "Which studies are about people with disability? ", response: "ANTABE" },
+    { message: "Which study is related about nature?", response: "Taskgrove." },
+    { message: "Which studies are related to geography?", response: "COMPAWNION, HTEFINDER" },
+
   ];
 
   const sendMessage = (message) => {
