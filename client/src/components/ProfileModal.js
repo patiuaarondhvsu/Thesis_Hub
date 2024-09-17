@@ -1,30 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios
 import './ProfileModal.css';
 
 const ProfileModal = ({ isOpen, onClose }) => {
-  const [name, setName] = useState('John Doe');
-  const [email, setEmail] = useState('john.doe@example.com');
-  const [profileIcon, setProfileIcon] = useState('path/to/default/icon.png'); // Default profile icon
+  const [name, setName] = useState('');
+  const [profileIcon, setProfileIcon] = useState('path/to/default/icon.png');
 
   // State for password fields
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [reEnterPassword, setReEnterPassword] = useState('');
 
-  // Handle profile icon change
-  const handleIconChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfileIcon(e.target.result); // Update profile icon with new image
+  // Fetch user data when the modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const fetchUserData = async () => {
+        try {
+          const response = await axios.get('http://localhost:5000/profile', { withCredentials: true });
+          const user = response.data;
+          setName(user.name || '');
+          // Optionally set profileIcon if you have URL or path to profile icon
+          setProfileIcon(user.profileIcon || 'path/to/default/icon.png');
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          alert("Failed to load user data. Please try again.");
+        }
       };
-      reader.readAsDataURL(file);
+
+      fetchUserData();
     }
-  };
+  }, [isOpen]);
 
   // Handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Check if new passwords match
@@ -33,19 +41,29 @@ const ProfileModal = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Logic to save the updated profile information and password
-    console.log('Updated Name:', name);
-    console.log('Updated Email:', email);
-    console.log('Updated Profile Icon:', profileIcon);
-    console.log('Current Password:', currentPassword);
-    console.log('New Password:', newPassword);
+    try {
+      // Prepare the data to send
+      const data = {
+        name,
+        currentPassword,
+        newPassword
+      };
 
-    // Clear password fields after submission
-    setCurrentPassword('');
-    setNewPassword('');
-    setReEnterPassword('');
+      // Send data to the server
+      await axios.post('http://localhost:5000/profile/edit', data, {
+        withCredentials: true, // Include cookies in the request if needed
+      });
 
-    onClose(); // Close the modal after saving
+      // Clear password fields after submission
+      setCurrentPassword('');
+      setNewPassword('');
+      setReEnterPassword('');
+      onClose(); // Close the modal after saving
+      alert("Password Changed Succesfully!");
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Please enter correct password");
+    }
   };
 
   if (!isOpen) return null;
@@ -54,27 +72,10 @@ const ProfileModal = ({ isOpen, onClose }) => {
     <div className="modal-overlay">
       <div className="modal-content2">
         <h2>Edit My Profile</h2>
-        <div className="form-group">
-           
-          </div>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+            <p id="name">{name}</p> {/* Display name as non-editable text */}
           </div>
           <div className="form-group">
             <label htmlFor="current-password">Current Password:</label>
