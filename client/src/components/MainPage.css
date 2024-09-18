@@ -1,6 +1,7 @@
 .App-results{
   overflow-y: auto; /* Enable vertical scrolling */
   height: calc(100vh - 80px); /* Adjusts for header/footer height */
+ 
 }
   
 .main-page {
@@ -222,8 +223,8 @@
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     flex-direction: column; /* Arrange items in a column */
-    
- 
+    background-color: #fff; /* For browsers that do not support gradients */
+    background-image: linear-gradient(#cdf7ff, transparent);
    
   }
    
@@ -245,7 +246,7 @@
    }
  
    .search-icon {
-     background-color: #007bff; /* Blue background for the button */
+     background-color: #57c3de; /* Blue background for the button */
      color: black;
      border: none;
      padding: 10px 20px;
@@ -330,9 +331,9 @@
  }
  
  .pagination button.active {
-   background: #007bff ;
+   background: #57c3de ;
    color: black;
-   border-color: #007bff;
+   border-color: #57c3de;
  }
  
  .pagination button:hover {
