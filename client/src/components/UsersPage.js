@@ -62,7 +62,6 @@ const UsersPage = () => {
           <table className="data-table">
             <thead>
               <tr>
-                <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Date of Birth</th>
@@ -72,7 +71,6 @@ const UsersPage = () => {
             <tbody>
               {filteredData.map(user => (
                 <tr key={user._id}>
-                  <td>{user._id}</td> {/* MongoDB uses _id as the unique identifier */}
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{new Date(user.dateOfBirth).toLocaleDateString()}</td> {/* Format date */}
