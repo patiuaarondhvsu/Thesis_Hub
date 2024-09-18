@@ -2,6 +2,7 @@ const { Router } = require('express');
 const passport = require('passport');
 const path = require('path');
 
+
 // for security/authentication and session
 const requireLogin = require('../middleware/requireLogin');
 
@@ -21,15 +22,42 @@ const bcrypt = require('bcrypt');
 
 // email handler (for sending mails)
 const nodemailer = require('nodemailer');
+const { google } = require('googleapis');
+
+// OAUTH
+const oauth2Client = new google.auth.OAuth2(
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET,
+    'https://developers.google.com/oauthplayground' // Redirect URI
+);
+
+// refresh token
+oauth2Client.setCredentials({
+    refresh_token: process.env.REFRESH_TOKEN,
+});
+
+//  access token
+const getAccessToken = async () => {
+    const { token } = await oauth2Client.getAccessToken();
+    return token;
+};
 
 //nodemailer transporter
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.AUTH_EMAIL,
-        pass: process.env.AUTH_PASS
-    }
-});
+const createTransporter = async () => {
+    const accessToken = await getAccessToken();
+
+    return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            type: 'OAuth2',
+            user: process.env.AUTH_EMAIL,
+            clientId: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            refreshToken: process.env.REFRESH_TOKEN,
+            accessToken: accessToken,
+        },
+    });
+};
 
 //unique string (installation = npm add nodemailer uuid)
 const {v4: uuidv4} = require("uuid");
@@ -149,14 +177,10 @@ router.post("/signup", async(req,res)=>{
     
     })
     
-    // send verification email
-    const sendVerificationEmail = ({_id, email}, res) => {
-        // url to be used in the email
+    const sendVerificationEmail = async ({ _id, email }, res) => {
         const currentUrl = "http://localhost:5000/";
-    
         const uniqueString = uuidv4() + _id;
     
-        //mail options
         const mailOptions = {
             from: process.env.AUTH_EMAIL,
             to: email,
@@ -164,12 +188,9 @@ router.post("/signup", async(req,res)=>{
             html: `<p>Verify your email address to continue the signup and login into your account.</p><p><b>This link expires in 1 hour</b>.</p><p>Press <a href=${currentUrl + "verify/" + _id + "/" + uniqueString}>here</a> to proceed.</p>`,
         };
     
-        //hash the uniqueString
-        const saltRounds = 10;
-        bcrypt
-        .hash(uniqueString, saltRounds)
-        .then((hashedUniqueString) => {
-            // set values in userVerification collection
+        try {
+            const transporter = await createTransporter(); // Create the transporter
+            const hashedUniqueString = await bcrypt.hash(uniqueString, 10);
             const newVerification = new userVerification({
                 userId: _id,
                 uniqueString: hashedUniqueString,
@@ -177,40 +198,18 @@ router.post("/signup", async(req,res)=>{
                 expiredAt: Date.now() + 3600000,
             });
     
-            newVerification
-            .save()
-            .then(() => {
-                transporter
-                .sendMail(mailOptions)
-                .then(() => {
-                    // email sent and verification record saved
-                    res.render("login", { alertMessage: "Verification Email Sent", alertType: "success" });
-                })
-                .catch((error) => {
-                    console.log(error);
-                    res.json({
-                        status: "FAILED",
-                        message: "Verification email failed"
-                    }); 
-                })
-            })
-            .catch((error) => {
-                console.log(error);
-                res.json({
-                    status: "FAILED",
-                    message: "Couln't save verification email data"
-                }); 
-            })
-    
-        })
-        .catch( ()=> {
+            await newVerification.save();
+            await transporter.sendMail(mailOptions);
+            res.render("login", { alertMessage: "Verification Email Sent", alertType: "success" });
+        } catch (error) {
+            console.log(error);
             res.json({
                 status: "FAILED",
-                message: "an error occured while hashing email data!"
-            }); 
-        })
+                message: "Verification email failed",
+            });
+        }
     };
-    
+
     //verify email
     router.get("/verify/:userId/:uniqueString", (req, res) => {
         let { userId, uniqueString } = req.params;
