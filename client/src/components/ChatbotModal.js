@@ -1,5 +1,6 @@
 import React from 'react';
 import Chatbot from './Chatbot'; // Ensure the path is correct
+import './ChatbotModal.css'; // Include a CSS file for styling
 
 const ChatbotModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
