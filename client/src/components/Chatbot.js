@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 
+
 const Chatbot = () => {
   const [userMessage, setUserMessage] = useState('');
   const [chatHistory, setChatHistory] = useState([]);
@@ -70,6 +71,7 @@ const Chatbot = () => {
         style={{ 
           maxHeight: '300px', 
           overflowY: 'auto', 
+          border: 'none', 
           border: '1px solid #ccc',  // Add border
           padding: '10px',          // Add padding
           borderRadius: '5px',      // Optional: round corners
@@ -94,14 +96,20 @@ const Chatbot = () => {
         ))}
       </div>
 
+        <div className="chatbot-input">
       <input
-        id="textbox"
+        id="text-box"
         type="text"
         value={userMessage}
         onChange={(e) => setUserMessage(e.target.value)}
         onKeyPress={(e) => e.key === 'Enter' && sendMessage(userMessage)}
-      />
-      <button id="sendBtn" onClick={() => sendMessage(userMessage)}>Send</button>
+        style={{ margin: '5px', padding: '10px',  flex: '1',
+          padding: '10px',
+          borderRadius: '30px',
+         }}
+     />
+      <button id="sendBtn" onClick={() => sendMessage(userMessage)} style={{ margin: '5px', padding: '20px' }}>Send</button>
+    </div>
     </div>
   );
 };

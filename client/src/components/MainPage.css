@@ -96,7 +96,7 @@
    .chatbot-button {
     background-color: #57c3de;
    
-    border-radius: 12px;
+    border-radius: 2px;
   border: none;
   color: white;
   padding: 15px;
@@ -258,6 +258,17 @@
    padding: 10px;
    outline: none;
    }
+
+   @media (max-width: 768px) {
+    .search-bar {
+     display: flex;
+     align-items: center;
+      width: 69%;
+     background-color: transparent;
+     border-radius: 0 0 ;
+   }
+
+  }
  
    .search-icon {
      background-color: #57c3de; /* Blue background for the button */
@@ -410,6 +421,23 @@
   cursor: not-allowed; /* Visual cue */
   user-select: none; /* Attempt to prevent selection */
   overflow: hidden; /* Prevents accidental scroll capture */
+}
+
+@media (max-width: 768px) {
+  .blank-overlay {
+    position: absolute;
+  top: 0;
+  left: 0;
+  right: 1.5%;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0); /* Transparent overlay */
+  pointer-events: auto; /* Block interactions */
+  z-index: 20; /* Ensure it's above the iframe */
+  cursor: not-allowed; /* Visual cue */
+  user-select: none; /* Attempt to prevent selection */
+  overflow: auto; /* Prevents accidental scroll capture */
+    
+  }
 }
 
 .pdf-close-button {

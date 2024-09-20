@@ -183,7 +183,7 @@ const MainPage = () => {
           
           {isProfileOpen && (
             <div className="profile-dropdown">
-              <button onClick={openProfileModal}>CHANGE PASSWORD</button>
+              {/* <button onClick={openProfileModal}>CHANGE PASSWORD</button> Change Password Button */}
               <button onClick={handleLogout}>LOGOUT</button>
             </div>
           )}
