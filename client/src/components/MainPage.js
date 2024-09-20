@@ -64,7 +64,7 @@ const MainPage = () => {
 
   // logout handler
   const handleLogout = () => {
-    axios.get('http://localhost:5000/logout', { withCredentials: true })
+    axios.get('https://thesis-hub-server.onrender.com/logout', { withCredentials: true })
   .then(response => {
     // Redirect to login page or handle redirection in another way
     window.location.href = '/'; 
@@ -76,7 +76,7 @@ const MainPage = () => {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/theses')
+    axios.get('https://thesis-hub-server.onrender.com/api/theses')
         .then(response => {
             // Filter out deleted theses
             const activeTheses = response.data.filter(thesis => !thesis.deleted);
@@ -158,12 +158,12 @@ const MainPage = () => {
   const showPDF = (pdf) => {
     // to encoded and to use read the spaces as %
     const encodedPdf = encodeURIComponent(pdf);
-    window.open(`http://localhost:5000/files/${encodedPdf}`, "_blank", "noreferrer");
+    window.open(`https://thesis-hub-server.onrender.com/files/${encodedPdf}`, "_blank", "noreferrer");
   };
 
   const handleTitleClick = (result) => {
     const encodedPdf = encodeURIComponent(result.filename);
-    setPdfSrc(`http://localhost:5000/files/${encodedPdf}#toolbar=0`); // Set PDF source with toolbar=0
+    setPdfSrc(`https://thesis-hub-server.onrender.com/files/${encodedPdf}#toolbar=0`); // Set PDF source with toolbar=0
     setPdfVisible(true); // Show the PDF iframe
   };
 
