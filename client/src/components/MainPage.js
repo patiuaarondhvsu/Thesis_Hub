@@ -156,10 +156,10 @@ const MainPage = () => {
   };
 
   const showPDF = (pdf) => {
-    // to encoded and to use read the spaces as %
     const encodedPdf = encodeURIComponent(pdf);
-    window.open(`https://thesis-hub-server.onrender.com/files/${encodedPdf}`, "_blank", "noreferrer");
-  };
+    setPdfSrc(`https://thesis-hub-server.onrender.com/files/${encodedPdf}#toolbar=0`);
+    setPdfVisible(true);
+};
 
   const handleTitleClick = (result) => {
     const encodedPdf = encodeURIComponent(result.filename);
