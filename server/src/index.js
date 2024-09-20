@@ -34,28 +34,21 @@ app.engine('handlebars', expbs.engine({
 const MongoStore = require('connect-mongo');
 
 // Session middleware
-
-const cookieConfig = {
-    maxAge: 60000 * (60 * 24),
-    secure: process.env.NODE_ENV === 'production' // Set secure to true only in production
-};
-
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: cookieConfig,
+    cookie: { maxAge: 60000 * (60 * 24), secure: true },
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URL,
-        collectionName: 'sessions'
-    })
+        collectionName: 'sessions'})
 }));
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-    origin: '*', // Temporarily allow all origins for debugging
+    origin: 'https://thesis-hub.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
