@@ -178,7 +178,7 @@ router.post("/signup", async(req,res)=>{
     })
     
     const sendVerificationEmail = async ({ _id, email }, res) => {
-        const currentUrl = "http://localhost:5000/";
+        const currentUrl = "https://thesis-hub-server.onrender.com/";
         const uniqueString = uuidv4() + _id;
     
         const mailOptions = {
