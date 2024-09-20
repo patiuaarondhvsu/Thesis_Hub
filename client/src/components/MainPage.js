@@ -8,6 +8,8 @@ import Footer from './Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faSearch, faUserCircle, faStar, faTrash } from '@fortawesome/free-solid-svg-icons';
 
+
+                                                                                            {/* Library Modal 
 const MyLibraryModal = ({ isOpen, onClose, libraryItems, onDelete, notification }) => {
   if (!isOpen) return null;
 
@@ -38,7 +40,7 @@ const MyLibraryModal = ({ isOpen, onClose, libraryItems, onDelete, notification 
     </div>
   );
 };
-
+*/}
 const MainPage = () => {
   const [theses, setTheses] = useState([]);
   const [error, setError] = useState(null);
@@ -171,7 +173,7 @@ const MainPage = () => {
         <img src="/thesishublogowhite.jpg" alt="Logo" className="logo" />
 
         <div className="libchat-button">
-          <button className="library-button" onClick={() => setLibraryModalOpen(true)}>My Library</button>
+          <button className="library-button" onClick={() => setLibraryModalOpen(true)}></button>
           <button className="chatbot-button" onClick={openChatbotModal}>Chatbot</button>
         </div>
        
@@ -181,7 +183,7 @@ const MainPage = () => {
           
           {isProfileOpen && (
             <div className="profile-dropdown">
-              <button onClick={openProfileModal}>EDIT PROFILE</button>
+              <button onClick={openProfileModal}>CHANGE PASSWORD</button>
               <button onClick={handleLogout}>LOGOUT</button>
             </div>
           )}
@@ -217,12 +219,14 @@ const MainPage = () => {
               className="search-icon"
               onClick={handleSearch}
             />
+            
+                                    {  /* Date ICON 
             <FontAwesomeIcon
               icon={faCalendarAlt}
               className="date-icon"
               onClick={openDateModal}
-            />
-          </div>
+            />                          */ }
+          </div> 
 
           <div className="results">
             
@@ -240,20 +244,22 @@ const MainPage = () => {
                   </p>
                   <p className="result-authors">{result.author}</p>
                   <p className="result-year">{result.year}</p>
-                  <button
+                
+                                              { /* STAR BUTTON 
+                <button
                     className="star-button"
                     onClick={() => handleAddToLibrary(result)}
-                  >
+                  > 
                     <FontAwesomeIcon icon={faStar} />
-                  </button>
+                  </button>  */              }
+                                             
                 </div>
               ))
             )}
-          </div>
-          
-          
+          </div>         
         </div>
 
+                                             {/* DATE MODAL 
         <Date
           isOpen={isDateModalOpen}
           onClose={closeDateModal}
@@ -262,13 +268,15 @@ const MainPage = () => {
           setStartDate={setStartDate}
           setEndDate={setEndDate}
           onApply={applyDateSelection}
-        />
+        />  
+                                           */ }
 
         <ProfileModal
           isOpen={isProfileModalOpen}
           onClose={closeProfileModal}
         />
 
+                                             { /* LIBRARY MODAL 
         <MyLibraryModal
           isOpen={isLibraryModalOpen}
           onClose={closeLibraryModal}
@@ -276,7 +284,9 @@ const MainPage = () => {
           onDelete={handleDeleteFromLibrary}
           notification={notification}
         />
+                                            */ }
 
+                                          
         <ChatbotModal
           isOpen={isChatbotModalOpen}
           onClose={closeChatbotModal}

@@ -40,7 +40,7 @@ const UsersPage = () => {
       {/* Header */}
       <Header />
 
-      <div className="main-page">
+      <div className="main-page-users">
         <Sidebar isVisible={sidebarVisible} />
         <div className={`content ${sidebarVisible ? 'sidebar-open' : ''}`}>
           <button onClick={toggleSidebar} className="menu-button">
@@ -53,7 +53,7 @@ const UsersPage = () => {
               placeholder="Search..."
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              className="search-bar"
+              className="search-bar-users"
             />
           </div>
 

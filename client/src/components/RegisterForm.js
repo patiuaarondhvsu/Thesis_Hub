@@ -55,7 +55,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <input 
-                                type="text" 
+                                type="name" 
                                 placeholder="Name" 
                                 value={name} 
                                 onChange={(e) => setName(e.target.value)} 
