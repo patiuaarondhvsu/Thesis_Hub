@@ -203,7 +203,6 @@ const MainPage = () => {
         title="PDF Viewer"
         frameBorder="0"
         className="pdf-iframe"
-        style={{ width: '100%', height: '100%' }} // Adjust styles as needed
       ></iframe>
       <div className="blank-overlay" /> {/* Blocking overlay */}
     </div>
