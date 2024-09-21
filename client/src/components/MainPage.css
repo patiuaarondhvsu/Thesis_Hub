@@ -1,7 +1,12 @@
 .App-results{
   overflow-y: auto; /* Enable vertical scrolling */
   height: calc(100vh - 80px); /* Adjusts for header/footer height */
- 
+  background-image: linear-gradient(#cdf7ff, transparent);
+}
+
+.App {
+
+  height: calc(100vh - 80px); /* Adjusts for header/footer height */
 }
   
 .main-page {
@@ -11,7 +16,9 @@
    flex-direction: column;
    padding: 1rem;
    height: calc(100vh - 80px); /* Adjusts for header/footer height */
-   
+   background-color: #fff; /* For browsers that do not support gradients */
+   background-image: linear-gradient(#cdf7ff, transparent);
+
    }
    
  
@@ -87,10 +94,18 @@
   
  
    .chatbot-button {
-     background-color: transparent;
-     border: none;
-     cursor: pointer;
-     font-size: 16px;
+    background-color: #57c3de;
+   
+    border-radius: 2px;
+  border: none;
+  color: white;
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
    }
  
    .library-button {
@@ -140,7 +155,6 @@
    .results {
      margin-top: 20px;
      max-height: 400px; /* Adjust based on your preference */
-
   
      max-width: 100%;
    }
@@ -223,8 +237,7 @@
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     flex-direction: column; /* Arrange items in a column */
-    background-color: #fff; /* For browsers that do not support gradients */
-    background-image: linear-gradient(#cdf7ff, transparent);
+
    
   }
    
@@ -236,6 +249,7 @@
      display: flex;
      align-items: center;
      margin-bottom: 1rem;
+     width: 40%;
    }
    
    .search-bar input[type="text"] {
@@ -244,6 +258,17 @@
    padding: 10px;
    outline: none;
    }
+
+   @media (max-width: 768px) {
+    .search-bar {
+     display: flex;
+     align-items: center;
+      width: 69%;
+     background-color: transparent;
+     border-radius: 0 0 ;
+   }
+
+  }
  
    .search-icon {
      background-color: #57c3de; /* Blue background for the button */
@@ -340,6 +365,8 @@
    background: #f1f1f1;
  }
 
+
+ /* PDF  */
  .pdf-overlay {
   position: fixed;
   top: 0;
@@ -350,8 +377,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   z-index: 1000;
 }
+
 
 .pdf-iframe-container {
   position: relative;
@@ -363,10 +392,20 @@
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .pdf-iframe-container {
+    width: 95%; /* Further increase width on smaller devices */
+    max-height: 60vh; /* Further reduce max height */
+    
+  }
+}
+
+
 .pdf-iframe {
   width: 100%;
   height: 100%;
   border: none;
+  
   /* iframe styles */
 }
 
@@ -382,6 +421,23 @@
   cursor: not-allowed; /* Visual cue */
   user-select: none; /* Attempt to prevent selection */
   overflow: hidden; /* Prevents accidental scroll capture */
+}
+
+@media (max-width: 768px) {
+  .blank-overlay {
+    position: absolute;
+  top: 0;
+  left: 0;
+  right: 1.5%;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0); /* Transparent overlay */
+  pointer-events: auto; /* Block interactions */
+  z-index: 20; /* Ensure it's above the iframe */
+  cursor: not-allowed; /* Visual cue */
+  user-select: none; /* Attempt to prevent selection */
+  overflow: auto; /* Prevents accidental scroll capture */
+    
+  }
 }
 
 .pdf-close-button {

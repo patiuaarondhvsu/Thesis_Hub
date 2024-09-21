@@ -82,8 +82,7 @@
   
   /* Close Button */
   .modal-content button {
-
-    top: 10px;
+  top: 10px;
     right: 10px;
   }
   
@@ -92,17 +91,23 @@
     .footer-container {
         flex-direction: column; /* Stacks elements vertically on smaller screens */
         align-items: flex; /* Aligns items to start for better readability */
-       
+        height: calc(30vh - 300px); /* Adjusts for header/footer height */
+ 
     }
 
     .footer-links, .footer-text {
         text-align: center; /* Center align text on smaller screens */
         margin-bottom: 15px; /* Adds some space below each section */
+     
     }
 
     .footer-logo {
         justify-content: center; /* Centers logos on smaller screens */
+        height: 0; /* Logo Hide */
         margin-bottom: 15px; /* Adds some space below each section */
+   
+        
+        
     }
 }
 

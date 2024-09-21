@@ -23,7 +23,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/signup', {
+            const response = await axios.post('https://thesis-hub-server.onrender.com/signup', {
                 name,
                 email,
                 password,
@@ -55,7 +55,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
                     <form onSubmit={handleSubmit}>
                         <div className="input-group">
                             <input 
-                                type="text" 
+                                type="name" 
                                 placeholder="Name" 
                                 value={name} 
                                 onChange={(e) => setName(e.target.value)} 

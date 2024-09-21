@@ -35,7 +35,7 @@ const MongoStore = require('connect-mongo');
 
 // Session middleware
 app.use(session({
-    secret: process.env.SESSION_SECRETS,
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: 60000 * (60 * 24), secure: false },

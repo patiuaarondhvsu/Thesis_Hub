@@ -44,9 +44,9 @@ function Footer() {
           <img src="/ccslogo.png" alt="" className="footer-logo" /> 
         </div>
         <div className="footer-links">
-          <a href="#" onClick={(e) => { e.preventDefault(); openModal('about'); }}>About Us</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); openModal('privacy'); }}>Privacy Policy</a>
-          <a href="#" onClick={(e) => { e.preventDefault(); openModal('contact'); }}>Contact Us</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); openModal('about'); }}></a>
+          <a href="#" onClick={(e) => { e.preventDefault(); openModal('privacy'); }}></a>
+          <a href="#" onClick={(e) => { e.preventDefault(); openModal('contact'); }}></a>
         </div>
         <div className="footer-text">
           <p>

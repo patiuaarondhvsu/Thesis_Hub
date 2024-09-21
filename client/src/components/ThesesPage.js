@@ -119,7 +119,7 @@ const ThesesPage = () => {
                                 placeholder="Search theses..."
                                 value={searchQuery}
                                 onChange={handleInputChange}
-                                className="search-bar"
+                                className="search-bar-theses"
                             />
                             <button onClick={addThesis} className="upload-button">
                                 <span className="plus-icon">+</span> Upload

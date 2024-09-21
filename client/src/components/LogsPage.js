@@ -33,14 +33,15 @@ const Logs = () => {
     <div className="App">
       {/* Header */}
       <Header />
-
-      <div className="main-page">
+  
+      <div className="main-page-logs">
+      <h2>System Logs</h2>
         <Sidebar isVisible={sidebarVisible} />
-        <div className={`content ${sidebarVisible ? 'sidebar-open' : ''}`}>
+        <div className={`logs-content ${sidebarVisible ? 'sidebar-open' : ''}`}>
           <button onClick={toggleSidebar} className="menu-button">
             ☰
           </button>
-          <h1>System Logs</h1>
+    
           <table className="log-table">
             <thead>
               <tr>
