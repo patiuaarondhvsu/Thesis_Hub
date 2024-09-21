@@ -18,7 +18,11 @@ const LoginForm = ({ onSwitchToRegister }) => {
     console.log('Attempting to login with:', { email, password });
 
     try {
+<<<<<<< HEAD
         const response = await axios.post(`http://localhost:5000/login`, {
+=======
+        const response = await axios.post('https://thesis-hub-server.onrender.com/login', {
+>>>>>>> cfe840df7a8c5224802fdd4fc4736455f41a28f2
             email,
             password
         }, {

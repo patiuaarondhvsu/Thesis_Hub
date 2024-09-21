@@ -38,7 +38,13 @@
     margin-bottom: 20px;
 }
 
-
+input[type="name"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
 input[type="email"] {
     width: 90%;
@@ -64,6 +70,13 @@ input[type="email"] {
     border-radius: 4px;
   }
 
+  input[type="date"] {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
 .login-form button {
     width: 100%;

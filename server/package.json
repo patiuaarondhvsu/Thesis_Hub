@@ -20,7 +20,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "uuid": "^10.0.0",
-    "vercel": "^37.4.2"
+    "vercel": "^32.3.0"
   },
   "name": "thesis-hub",
   "version": "1.0.0",

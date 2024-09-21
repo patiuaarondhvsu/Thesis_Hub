@@ -38,7 +38,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60000 * (60 * 24), secure: false },
+    cookie: { maxAge: 60000 * (60 * 24), secure: true },
     store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URL,
         collectionName: 'sessions'})
@@ -48,7 +48,7 @@ app.use(session({
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors({
-    origin: 'http://localhost:3000',
+    origin: 'https://thesis-hub.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true
 }));
